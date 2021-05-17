@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 /**
- *Контроллер зображень
+ * Контроллер зображень
  */
 @Controller
 @RequestMapping("/image")
@@ -28,8 +28,8 @@ public class ImageController {
 
     @PostMapping("/add")
     @ResponseBody
-    public String addImage(@RequestParam("test")String test,
-                            @RequestParam("image") MultipartFile file) throws IOException {
+    public String addImage(@RequestParam("test") String test,
+                           @RequestParam("image") MultipartFile file) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         ImageDto image = new ImageDto();
         image.setUrl(imageService.saveImage(file));
@@ -44,7 +44,7 @@ public class ImageController {
         ObjectMapper objectMapper = new ObjectMapper();
         insert.setUrl(url);
         insert.setAlt("default image");
-        insert.setSize(new int[]{600, 400,200});
+        insert.setSize(new int[]{600, 400, 200});
         return objectMapper.writeValueAsString(insert);
     }
 

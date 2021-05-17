@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,6 +22,9 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Сервіс користувачів
+ */
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepos userRepos;
@@ -37,6 +39,12 @@ public class UserService implements UserDetailsService {
         this.mailService = mailService;
     }
 
+    /**
+     * Загрузка користувача
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user =userRepos.findByUsername(username);;
@@ -50,6 +58,11 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    /**
+     * Створення користувача
+     * @param user
+     * @return
+     */
     public boolean addUser(User user){
         User userFromDb =  userRepos.findByUsername(user.getUsername());
         if(userFromDb!=null){
@@ -66,10 +79,20 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
+    /**
+     * Вибірка віх користувачів
+     * @return
+     */
     public List<User> findAll() {
         return userRepos.findAll();
     }
 
+    /**
+     * Збереження користувачів
+     * @param user
+     * @param username
+     * @param form
+     */
     public void saveUser(User user, String username, Map<String, String> form) {
         user.setUsername(username);
 
@@ -89,6 +112,14 @@ public class UserService implements UserDetailsService {
         userRepos.save(user);
     }
 
+    /**
+     * Оновлення профілю користувача
+     * @param user
+     * @param username
+     * @param password
+     * @param password2
+     * @param email
+     */
     public void updateProfile(User user, String username,
                               String password,String password2, String email) {
         String userEmail = user.getEmail();
@@ -117,6 +148,11 @@ public class UserService implements UserDetailsService {
         userRepos.save(user);
     }
 
+    /**
+     * Активація акаунту
+     * @param code
+     * @return
+     */
     public boolean activateUser(String code) {
         User user =userRepos.findByActivationCode(code);
         if (user ==null)
@@ -126,16 +162,30 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
+    /**
+     * Видаленя користувача
+     * @param id
+     * @return
+     */
     public boolean removeUser(String id){
         userRepos.deleteById(Long.parseLong(id));
         return true;
     }
 
+    /**
+     * Генерація коду активації
+     * @param user
+     * @return
+     */
     private String buildActivateLink(User user) {
         String link = String.format("%s/activate/%s",url,user.getActivationCode());
         return link;
     }
 
+    /**
+     * Встановлення коду активації
+     * @param user
+     */
     private void sendActivateCode(User user) {
         Map<String,Object> map = new HashMap<>();
         map.put("name",user.getUsername());

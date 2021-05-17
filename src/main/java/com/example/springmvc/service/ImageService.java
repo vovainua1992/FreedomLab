@@ -9,6 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+/**
+ * Images service(in progress)
+ */
 @Service
 public class ImageService {
 

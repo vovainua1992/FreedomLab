@@ -59,12 +59,13 @@ public class MainController {
                       @AuthenticationPrincipal User user
                     , @RequestParam("file") MultipartFile file
                     , Model model) throws IOException {
+
         message.setAuthor(user);
         if (bindingResult.hasErrors()){
             Map<String,String>errors =  getErrors(bindingResult);
             model.mergeAttributes(errors);
             model.addAttribute("message",message);
-        }else {
+        } else {
             if (file != null&&!file.getOriginalFilename().isEmpty()) {
                 String fileUrl = imageService.saveImage(file);
                 message.setImage(fileUrl);
