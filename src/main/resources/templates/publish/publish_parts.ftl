@@ -80,7 +80,7 @@
         </div>
     </div>
     <@us.author  user />
-    <script src="/static/scripts/content-tools.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ContentTools@1.6.1/build/content-tools.min.js"></script>
     <script src="/static/scripts/editor.js"></script>
     <script>
         putNews(${publish.id})
