@@ -1,7 +1,7 @@
 <#import "../parts/common.ftl" as c>
 <#import "../parts/log.ftl" as l>
 <#import "../parts/message.ftl" as mess>
-<#import "../parts/user.ftl" as user >
+
 <@c.page>
     <@c.info_box>
         <div class="container my-5">

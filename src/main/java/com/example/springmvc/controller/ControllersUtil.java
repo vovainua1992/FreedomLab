@@ -2,7 +2,6 @@ package com.example.springmvc.controller;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Map;
 import java.util.stream.Collector;
@@ -11,10 +10,11 @@ import java.util.stream.Collectors;
 /**
  * Клас статичних методів для контролерів
  */
-public class ControllerUtil {
+public class ControllersUtil {
 
     /**
      * Метод отримання переліку помилок із bindingResult
+     *
      * @param bindingResult
      * @return Map<String, String>
      */

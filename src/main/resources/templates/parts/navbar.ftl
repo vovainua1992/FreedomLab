@@ -5,7 +5,6 @@
 <div class="w-100 bg-light bg-gradient">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light  navbar-text">
-
             <a class="navbar-brand ms-3" href="#">Freedom</a>
             <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -38,7 +37,6 @@
                         </li>
                     </#if>
                 </ul>
-
                 <div class="d-inline-flex">
                     <#if user??>
                         <a class="nav-link  link-secondary dropdown-toggle " data-bs-toggle="dropdown"
@@ -56,7 +54,6 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-
                             <li>
                                 <@login.logout/>
                             </li>

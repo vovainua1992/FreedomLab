@@ -1,5 +1,5 @@
 <#import "../parts/common.ftl" as c>
-<#import "../parts/log.ftl" as l>
+
 <@c.page>
     ${message?ifExists}
     <div class="container h-100 text-center justify-content-center d-flex align-items-center">
@@ -33,7 +33,7 @@
             <div class="mt-2 form-floating shadow">
                 <input type="password" name="password2" id="passwordConfirmFloat"
                        class="form-control ${(password2Error??)?string('is-invalid', '')}"
-                placeholder="Password"/>
+                       placeholder="Password"/>
                 <label for="passwordConfirmFloat">Підтвердження паролю</label>
                 <#if password2Error??>
                     <div class="invalid-feedback">
@@ -45,7 +45,7 @@
                 <input type="email" name="email" id="emailFloat"
                        value="<#if user??>user.email</#if>"
                        class="form-control ${(emailError??)?string('is-invalid', '')}"
-                placeholder="some@some.com"/>
+                       placeholder="some@some.com"/>
                 <label for="emailFloat"> email:</label>
                 <#if emailError??>
                     <div class="invalid-feedback">
@@ -54,7 +54,8 @@
                 </#if>
             </div>
             <div class="mx-auto my-3 text-center">
-                <div class="g-recaptcha align-content-center" style="display: inline-block;" data-sitekey="6LdWiLsaAAAAAGGAc9o7RiWWDF2bWyJn9R70rBjF"></div>
+                <div class="g-recaptcha align-content-center" style="display: inline-block;"
+                     data-sitekey="6LdWiLsaAAAAAGGAc9o7RiWWDF2bWyJn9R70rBjF"></div>
                 <#if captchaError??>
                     <div class="alert alert-danger" role="alert">
                         ${captchaError}

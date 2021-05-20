@@ -4,6 +4,7 @@ import com.example.springmvc.dommain.Message;
 import com.example.springmvc.dommain.User;
 import com.example.springmvc.repos.MessageRepos;
 import com.example.springmvc.service.ImageService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,55 +19,52 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Map;
 
-import static com.example.springmvc.controller.ControllerUtil.getErrors;
+import static com.example.springmvc.controller.ControllersUtil.getErrors;
 
 /**
  * Контролер головної сторінки (в розробці)
  */
 @Controller
+@RequiredArgsConstructor
 public class MainController {
     @Value("${upload.path}")
     private String uploadPath;
     private final ImageService imageService;
     private final MessageRepos messageRepos;
 
-    public MainController(ImageService imageService, MessageRepos messageRepos) {
-        this.imageService = imageService;
-        this.messageRepos = messageRepos;
-    }
+
 
     @GetMapping("/")
-    public String greeting(Map<String,Object> model) {
+    public String greeting(Map<String, Object> model) {
         return "main_think/greeting";
     }
 
     @GetMapping("/main")
-    public String main(@RequestParam (required = false,defaultValue = "") String filter,
-                       Model model){
-        Iterable<Message> messages ;
-        if (filter!=null&&!filter.isEmpty())
+    public String main(@RequestParam(required = false, defaultValue = "") String filter,
+                       Model model) {
+        Iterable<Message> messages;
+        if (filter != null && !filter.isEmpty())
             messages = messageRepos.findByTag(filter);
         else
             messages = messageRepos.findAll();
-        model.addAttribute("messages",messages);
-        model.addAttribute("filter",filter);
+        model.addAttribute("messages", messages);
+        model.addAttribute("filter", filter);
         return "main_think/main";
     }
 
     @PostMapping("/main")
     public String add(@Valid Message message,
                       BindingResult bindingResult,
-                      @AuthenticationPrincipal User user
-                    , @RequestParam("file") MultipartFile file
-                    , Model model) throws IOException {
-
+                      @AuthenticationPrincipal User user,
+                      @RequestParam("file") MultipartFile file,
+                      Model model) throws IOException {
         message.setAuthor(user);
-        if (bindingResult.hasErrors()){
-            Map<String,String>errors =  getErrors(bindingResult);
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = getErrors(bindingResult);
             model.mergeAttributes(errors);
-            model.addAttribute("message",message);
+            model.addAttribute("message", message);
         } else {
-            if (file != null&&!file.getOriginalFilename().isEmpty()) {
+            if (file != null && !file.getOriginalFilename().isEmpty()) {
                 String fileUrl = imageService.saveImage(file);
                 message.setImage(fileUrl);
             }
@@ -74,11 +72,7 @@ public class MainController {
             messageRepos.save(message);
         }
         Iterable<Message> messages = messageRepos.findAll();
-        model.addAttribute("messages",messages);
+        model.addAttribute("messages", messages);
         return "main_think/main";
     }
-
-
-
-
 }

@@ -8,10 +8,12 @@ import org.springframework.stereotype.Repository;
  * User repository
  */
 @Repository
-public interface UserRepos extends JpaRepository<User,Long> {
+public interface UserRepos extends JpaRepository<User, Long> {
     User findByUsername(String username);
 
     User findByActivationCode(String code);
 
     void deleteById(long id);
+
+    User findById(long id);
 }

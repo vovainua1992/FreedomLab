@@ -26,8 +26,10 @@
             </div>
         </div>
         <div class="row">
-            <div class="offset-6 col-1"><a class="btn-light btn h-6 fw-bold text-dark" href="/news/delete/${publish.id}" style="text-decoration: none;">Видалити</a></div>
-            <div class=" col-1"><a class="btn-light btn h-6 fw-bold text-dark" href="/news/${publish.id}" style="text-decoration: none;">Зберегти</a></div>
+            <div class="offset-6 col-1"><a class="btn-light btn h-6 fw-bold text-dark" href="/news/delete/${publish.id}"
+                                           style="text-decoration: none;">Видалити</a></div>
+            <div class=" col-1"><a class="btn-light btn h-6 fw-bold text-dark" href="/news/${publish.id}"
+                                   style="text-decoration: none;">Зберегти</a></div>
         </div>
     </div>
 </@c.page>

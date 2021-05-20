@@ -11,7 +11,6 @@
                    background-repeat: no-repeat;
                    background-image: url('${publish.titleImages!'/static/icons/image.svg'}');"
         >
-
             <div class="d-flex flex-column h-100  text-dark  ">
                 <div class="bg-white  d-flex justify-content-center" style="height: 15%;">
                     <h2 class="h2 align-middle mt-auto text-center">${publish.titleNames}</h2>
@@ -42,7 +41,6 @@
 <#macro poster_edit publish>
     <div class="container-fluid px-4 py-5" id="custom-cards">
         <div class="row row-cols-4 align-items-stretch g-4 py-5">
-
             <div class="col-2 offset-lg-2 col-lg-3 mt-5 pt-5">
                 <h4 class="h4 text-center">Налаштування публікації</h4>
                 <form class="form align-middle"
@@ -64,14 +62,12 @@
                 </form>
             </div>
             <@publish_title  publish/>
-
         </div>
     </div>
 </#macro>
 
 <!-- Редактор контенту-->
 <#macro content publish>
-
     <div class="bg-light">
         <div class="container-xl py-5">
             <div class="row bg-body">
@@ -83,11 +79,9 @@
             </div>
         </div>
     </div>
-
     <@us.author  user />
     <script src="/static/scripts/content-tools.min.js"></script>
     <script src="/static/scripts/editor.js"></script>
-
     <script>
         putNews(${publish.id})
         myFunc()
@@ -99,8 +93,10 @@
         <div class="row pt-5 mt-3">
             <h4 class="h3 text-center">Додаткова інформація</h4>
             <p class="text-center text-muted">Згодом тут буде розгорнута інструкція до редагування публікацій</p>
-            <p class="h5">На даний момент налаштування досить просте потрібно можна вибрати заставку для публікації та її назву.
-                Також тут є перемикач активності публікації. Якщо публікація не активна то бачити її буде лише автор у вкладці мої публікації.
+            <p class="h5">На даний момент налаштування досить просте потрібно можна вибрати заставку для публікації та
+                її назву.
+                Також тут є перемикач активності публікації. Якщо публікація не активна то бачити її буде лише автор у
+                вкладці мої публікації.
                 Кнопка оновити відповідає за оновлення налаштувань публікації.</p>
         </div>
     </div>

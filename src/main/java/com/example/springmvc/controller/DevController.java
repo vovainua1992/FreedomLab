@@ -15,17 +15,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class DevController {
 
     @GetMapping("")
-    public String develop(){
+    public String develop() {
         return "develop/develop";
     }
 
     @GetMapping("/test")
-    public String testWorkSpace(){
+    public String testWorkSpace() {
         return "develop/test";
     }
 
     @GetMapping("/demo")
-    public String testDemo(){
+    public String testDemo() {
         return "develop/demo";
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
  * Publish controller
  */
 @Repository
-public interface PublicationRepos extends CrudRepository<Publish,Long> {
+public interface PublicationRepos extends CrudRepository<Publish, Long> {
 
     List<Publish> findAllByActiveTrue();
 

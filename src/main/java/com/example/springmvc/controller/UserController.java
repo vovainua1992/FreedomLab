@@ -2,7 +2,9 @@ package com.example.springmvc.controller;
 
 import com.example.springmvc.dommain.Role;
 import com.example.springmvc.dommain.User;
+import com.example.springmvc.repos.UserRepos;
 import com.example.springmvc.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,13 +20,10 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/user")
+@AllArgsConstructor
 public class UserController {
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
+    private final UserRepos userRepos;
 
     /**
      * Отримання списку користувачів
@@ -34,37 +33,38 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping()
     public String userList(Model model){
-        model.addAttribute("users", userService.findAll());
+        model.addAttribute("users", userRepos.findAll());
         return  "user/userList";
     }
 
     /**
      * Редагування профілю для адміністрації
-     * @param user
+     * @param id
      * @param model
      * @return
      */
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("{user}")
-    public String userEditForm(@PathVariable User user, Model model){
-        model.addAttribute("user",user);
+    @GetMapping("{id}")
+    public String userEditForm(@PathVariable String id,
+                               Model model){
+        User selectUser= userRepos.findById(Long.parseLong(id));
+        model.addAttribute("user",selectUser);
         model.addAttribute("roles", Role.values());
         return  "user/userEdit";
     }
 
     /**
      * Збереження налаштувань користувача
-     * @param username
      * @param form
-     * @param user
+     * @param id
      * @return
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
-    public String userSave( @RequestParam String username,
-                            @RequestParam Map<String,String> form,
-                            @RequestParam("userId")User user){
-        userService.saveUser(user,username,form);
+    public String userSave( @RequestParam Map<String,String> form,
+                            @RequestParam("userId")String id){
+        User editsUser = userRepos.findById(Long.parseLong(id));
+        userService.updateUserAuthority(editsUser,form);
         return "redirect:/user";
     }
 
@@ -77,7 +77,7 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/delete/{id}")
     public RedirectView delete(RedirectAttributes attributes,
-                         @PathVariable String id){
+                               @PathVariable String id){
         userService.removeUser(id);
         return new RedirectView("/user");
     }
@@ -89,10 +89,10 @@ public class UserController {
      * @return
      */
     @GetMapping("/profile")
-    public String getProfile(Model model, @AuthenticationPrincipal User user){
+    public String getProfile(Model model,
+                             @AuthenticationPrincipal User user){
         model.addAttribute("username",user.getUsername());
         model.addAttribute("email", user.getEmail());
-
         return "user/profile";
     }
 
@@ -107,12 +107,13 @@ public class UserController {
      */
     @PostMapping("/profile")
     public String updateProfile(
-            @AuthenticationPrincipal User user, @RequestParam(defaultValue = "") String username,
-            @RequestParam(defaultValue = "") String password, @RequestParam(defaultValue = "") String password2,
+            @AuthenticationPrincipal User user,
+            @RequestParam(defaultValue = "") String username,
+            @RequestParam(defaultValue = "") String password,
+            @RequestParam(defaultValue = "") String password2,
             @RequestParam(defaultValue = "") String email
     ){
         userService.updateProfile(user,username,password, password2,email);
-
         return "redirect:/user/profile";
     }
 

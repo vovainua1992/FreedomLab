@@ -5,6 +5,7 @@ import com.example.springmvc.dommain.dto.ImageDto;
 import com.example.springmvc.dommain.dto.ImageInsert;
 import com.example.springmvc.service.ImageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +20,10 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping("/image")
+@AllArgsConstructor
 public class ImageController {
     private final ImageService imageService;
 
-    public ImageController(ImageService imageService) {
-        this.imageService = imageService;
-    }
 
     @PostMapping("/add")
     @ResponseBody

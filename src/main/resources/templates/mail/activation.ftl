@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body style="background: linear-gradient(#fafae3,#d7d7c8);">
 <table align="center" style="padding-top: 50px; background-color: #fafdff;max-width: 600px; width: 100%; height: 500px; border-radius: 1rem;
@@ -16,7 +16,8 @@
                     <td style="width: 25%;"></td>
                     <td style="width: 50%;">
                         <!--   <img src="/static/images/logo.png" style="width: 100%;height: auto; margin-left: auto; margin-right: auto;">-->
-                       <img src="cid:attachment.png" style="width: 100%;height: auto; margin-left: auto; margin-right: auto;">
+                        <img src="cid:attachment.png"
+                             style="width: 100%;height: auto; margin-left: auto; margin-right: auto;">
                     </td>
                     <td style="width: 25%;"></td>
                 </tr>

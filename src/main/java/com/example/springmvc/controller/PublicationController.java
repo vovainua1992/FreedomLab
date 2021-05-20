@@ -2,126 +2,121 @@ package com.example.springmvc.controller;
 
 import com.example.springmvc.dommain.Publish;
 import com.example.springmvc.dommain.User;
-import com.example.springmvc.dommain.dto.PublishContent;
 import com.example.springmvc.repos.PublicationRepos;
 import com.example.springmvc.service.ImageService;
+import com.example.springmvc.service.PublicationService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 
-@Controller
-@RequestMapping("/news")
+
 /**
  * Контроллер публікацій.
  */
+@Controller
+@RequestMapping("/news")
+@RequiredArgsConstructor
 public class PublicationController {
-    /**
-     * Сервіс зображень.
-     */
     private final ImageService imageService;
-    /**
-     * Репозиторій публікацій.
-     */
-    private final PublicationRepos newsRepos;
+    private final PublicationRepos publicationRepos;
+    private final PublicationService publicationService;
     private Logger logger = LogManager.getLogger("NewsController");
-
-    public PublicationController(ImageService imageService, PublicationRepos newsRepos) {
-        this.imageService = imageService;
-        this.newsRepos = newsRepos;
-    }
-
 
     /**
      * Всі публікації.
+     *
      * @param model
      * @return Сторінка публікацій
      */
     @GetMapping()
     public String getAll(Model model) {
-        model.addAttribute("news", newsRepos.findAllByActiveTrue());
-        model.addAttribute("title","Публікації");
+        model.addAttribute("news", publicationRepos.findAllByActiveTrue());
+        model.addAttribute("title", "Публікації");
         return "publish/titles";
     }
 
     /**
      * Всі публікації користувача.
+     *
      * @param user
      * @param model
      * @return
      */
     @GetMapping("/my")
     public String getMyAll(@AuthenticationPrincipal User user,
-                           Model model){
-        model.addAttribute("news",newsRepos.findAllByAuthor(user));
-        model.addAttribute("title","Мої публікації");
+                           Model model) {
+        model.addAttribute("news", publicationRepos.findAllByAuthor(user));
+        model.addAttribute("title", "Мої публікації");
         return "publish/titles";
     }
 
     /**
      * Сторінка публікації.
-     * @param publish
+     *
+     * @param id
      * @param model
      * @return
      */
-    @GetMapping("{publish}")
-    public String getNew(@PathVariable Publish publish,
+    @GetMapping("{id}")
+    public String getNew(@PathVariable String id,
                          @AuthenticationPrincipal User user,
                          Model model) {
-        boolean isEdit = user!=null&&(user.equals(publish.getAuthor())||user.isAdmin());
+        Publish publish = publicationRepos.findById(Long.parseLong(id));
+        boolean isEdit = publish.isEdit(user);
         model.addAttribute("publish", publish);
-        model.addAttribute("isEdit",isEdit);
+        model.addAttribute("isEdit", isEdit);
         return "publish/news_view";
     }
 
-
-
     /**
      * Створення публікації.
+     *
      * @return
      */
     @GetMapping("/add")
     public String newAdd(@AuthenticationPrincipal User user,
                          Model model) {
-        String defaultContent = "<p>Текст публікації</p>";
-        Publish publish= new Publish();
-        publish.setActive(false);
-        publish.setAuthor(user);
-        publish.setTitleNames("Назва публікації");
-        publish.setTitleImages(null);
-        publish.setTextHtml(defaultContent);
-        newsRepos.save(publish);
+        Publish publish = Publish.EMPTY(user);
+        publicationRepos.save(publish);
         model.addAttribute("publish", publish);
         return "publish/create_publish";
     }
 
     /**
      * Редагування постеру публікації.
+     *
      * @param user
-     * @param publish
+     * @param id
      * @param model
      * @return
      */
-    @GetMapping("/edit/{publish}")
+    @GetMapping("/edit/{id}")
     public String edit(@AuthenticationPrincipal User user,
-                         @PathVariable Publish publish,
-                         Model model) {
-        if (!user.equals(publish.getAuthor())&& !user.isAdmin())
-            return "errors/not_avtorithy";
+                       @PathVariable String id,
+                       Model model) {
+        Publish publish = publicationRepos.findById(Long.parseLong(id));
+        if (!publish.isEdit(user))
+            return "403";
         model.addAttribute("publish", publish);
         return "publish/create_publish";
     }
 
     /**
      * Оновлення постеру новини
+     *
      * @param id
      * @param title
      * @param imageTitle
@@ -135,86 +130,82 @@ public class PublicationController {
                                @RequestParam("title") String title,
                                @RequestParam("file") MultipartFile imageTitle,
                                Model model) throws IOException {
-
-        Publish publish = newsRepos.findById(id);
-        publish.setTitleNames(title);
-
-        if (!visible.isEmpty())
-            publish.setActive(true);
-        else
-            publish.setActive(false);
-
+        Publish publish = publicationRepos.findById(id);
+        publicationService.updatePoster(publish, visible, title);
         if (!imageTitle.isEmpty()) {
             String urlImage = imageService.saveImage(imageTitle);
             publish.setTitleImages(urlImage);
         }
-
-        newsRepos.save(publish);
+        publicationRepos.save(publish);
         model.addAttribute("publish", publish);
         return "publish/create_publish";
     }
 
-
     /**
      * Перемикання активності(видимості публікації)
-     * @param publish
+     *
+     * @param id
      * @param user
      * @param model
      * @return
      */
-    @GetMapping("/activate/{publish}")
-    public String setActive(@PathVariable Publish publish,
-                            @AuthenticationPrincipal User user,
-                            Model model){
-        if (user.equals(publish.getAuthor())) {
+    @GetMapping("/activate/{id}")
+    public String inverseActive(@PathVariable String id,
+                                @AuthenticationPrincipal User user,
+                                Model model) {
+        Publish publish = publicationRepos.findById(Long.parseLong(id));
+        boolean isEdit = publish.isEdit(user);
+        if (isEdit) {
             publish.setActive(!publish.isActive());
-            newsRepos.save(publish);
+            publicationRepos.save(publish);
         }
-        boolean isEdit = user!=null&&(user.equals(publish.getAuthor())||user.isAdmin());
         model.addAttribute("publish", publish);
-        model.addAttribute("isEdit",isEdit);
+        model.addAttribute("isEdit", isEdit);
         return "publish/news_view";
     }
 
     /**
      * Видалення публікації.
-     * @param publish
+     *
+     * @param id
      * @param user
      * @return
      */
-    @GetMapping("/delete/{publish}")
-    public String delete(@PathVariable Publish publish,
-                         @AuthenticationPrincipal User user) {
-        boolean isEdit = user!=null&&(user.equals(publish.getAuthor())||user.isAdmin());
-        if(isEdit){
-            newsRepos.delete(publish);
-        }
-        return "redirect:/news/my";
+    @GetMapping("/delete/{id}")
+    public RedirectView delete(@PathVariable String id,
+                               @AuthenticationPrincipal User user,
+                               RedirectAttributes attributes) {
+        Publish publish = publicationRepos.findById(Long.parseLong(id));
+        if (!publicationService.delete(publish, user)) {
+            attributes.addFlashAttribute("dang", "У вас немає прав видалити публікацію");
+            return new RedirectView("/news");
+        } else
+            attributes.addFlashAttribute("succ", "Пулікацію видаленно");
+        if (publish.isAuthor(user))
+            return new RedirectView("/news/my");
+        else
+            return new RedirectView("/news");
     }
 
     /**
      * Оновлення вмісту публікації (через редактор ContentTools)
-     * @param publish
+     *
+     * @param id
      * @param json
-     * @param model
      * @return
      * @throws JsonProcessingException
      */
-    @PostMapping(value = "/update/{publish}",
+    @PostMapping(value = "/update/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String updateNews(@PathVariable Publish publish,
-                             @RequestBody String json,
-                             Model model) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        PublishContent publishContent = objectMapper.readValue(json, PublishContent.class);
-        publishContent.getRegions().forEach((r) -> {
-            System.out.println(r.toString());
-        });
-        publish.setTextHtml(publishContent.getHtml());
-        newsRepos.save(publish);
-        return "ok";
+    public String updateContent(@PathVariable String id,
+                                @AuthenticationPrincipal User user,
+                                @RequestBody String json) throws JsonProcessingException {
+        Publish publish = publicationRepos.findById(Long.parseLong(id));
+        if (publish.isEdit(user)) {
+            publicationService.updateContent(json, publish);
+            return "ok";
+        } else
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Forbidden");
     }
-
-
 }

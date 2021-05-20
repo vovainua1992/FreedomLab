@@ -6,7 +6,7 @@
 <@c.page>
     <div class="container-xl mt-5">
         <div class="d-flex  " style="width: 1248px; height: 700px;">
-                <#include "../mail/mail.ftl" />
+            <#include "../mail/activation.ftl" />
         </div>
     </div>
 

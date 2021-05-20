@@ -25,10 +25,7 @@ public class ImageService {
         String uuid = UUID.randomUUID().toString();
         String resultFileName = uuid + '.' + file.getOriginalFilename();
         file.transferTo(new File(uploadPath + "/" + resultFileName));
-        return "/img/"+resultFileName;
+        return "/img/" + resultFileName;
     }
-
-
-
 
 }

@@ -3,7 +3,6 @@
 <#include "../parts/security.ftl">
 
 <@c.page>
-
     <div class="row  align-items-center">
         <div class="col-lg-4  mx-auto mt-5">
             <form class="form align-middle"
@@ -11,7 +10,7 @@
                   action="/news/add" method="post">
                 <label class="form-text">Заголовок:</label>
                 <input class="form-control" type="text" placeholder="Назва новини"
-                       name="title" value="${title}"  />
+                       name="title" value="${title}"/>
                 <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                 <label class="form-text">Заставка для новини:</label>
                 <input class="form-control" type="file" name="file"/>
@@ -22,7 +21,6 @@
                 <input type="hidden" name="img_url" value="${imgUrl}"/>
                 <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                 <input type="hidden" name="user" value="${user.id}"/>
-
             </form>
         </div>
         <div class="col-lg-6 mt-5">
@@ -32,7 +30,7 @@
                      alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title">
-                        <a  href="#" class="link link-secondary">
+                        <a href="#" class="link link-secondary">
                             ${title}
                         </a>
                     </h5>

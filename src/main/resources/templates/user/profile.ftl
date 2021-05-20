@@ -10,7 +10,8 @@
                 <td></td>
                 <td class="text-center">
                     <h2 class="h2">Налаштування</h2>
-                    <h6 class="h6 text-info">Увага! Робота над налаштуваннями ведеться і налаштування будуть зявлятись по мірі появи нового функціоналу.</h6>
+                    <h6 class="h6 text-info">Увага! Робота над налаштуваннями ведеться і налаштування будуть зявлятись
+                        по мірі появи нового функціоналу.</h6>
                 </td>
                 <td></td>
             </tr>
@@ -24,7 +25,6 @@
             </tbody>
         </table>
     </div>
-
 </@c.page>
 
 <#--категорії профілю-->
@@ -43,13 +43,13 @@
                     </button>
                 </li>
             </ul>
-
         </div>
         <div class="col-xxl-8 my-5 mx-auto">
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel"
                      aria-labelledby="home-tab"><@seting_main /></div>
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab"><@setting_security /></div>
+                <div class="tab-pane fade" id="profile" role="tabpanel"
+                     aria-labelledby="profile-tab"><@setting_security /></div>
             </div>
         </div>
     </div>
@@ -58,16 +58,13 @@
 <#--    Налаштування профілю користувача-->
 <#macro seting_main>
     ${message?ifExists}
-
     <form method="post">
         <div class="form-group row mt-3">
-
             <label class="col-sm-2 col-form-label"> Логін: </label>
             <div class="col-sm-4">
                 <input type="text" value="${name!''}" name="username" class="form-control" placeholder="User name"/>
             </div>
         </div>
-
         <div class="offset-sm-2 col-sm-2 mt-5">
             <button class="btn btn-primary m-2" type="submit">Зберегти</button>
         </div>
@@ -78,7 +75,6 @@
 <!-- Налаштування безпеки -->
 <#macro setting_security>
     <form class="justify-content-center align-content-center" method="post">
-
         <div class="form-groupя row my-1">
             <label class="col-sm-4 col-form-label"> Новий пароль:</label>
             <div class="col-sm-4">
@@ -91,7 +87,6 @@
                 <input type="password" name="password2" class="form-control" placeholder="Password"/>
             </div>
         </div>
-
         <div class="form-group row my-1">
             <label class="col-sm-4 col-form-label"> Почтова скринька:</label>
             <div class="col-sm-4">
@@ -104,5 +99,4 @@
         </div>
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
     </form>
-
 </#macro>
