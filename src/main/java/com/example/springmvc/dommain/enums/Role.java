@@ -1,4 +1,4 @@
-package com.example.springmvc.dommain;
+package com.example.springmvc.dommain.enums;
 
 import org.springframework.security.core.GrantedAuthority;
 

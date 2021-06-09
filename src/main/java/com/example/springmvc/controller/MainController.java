@@ -1,8 +1,10 @@
 package com.example.springmvc.controller;
 
+import com.example.springmvc.dommain.Image;
 import com.example.springmvc.dommain.Message;
 import com.example.springmvc.dommain.User;
 import com.example.springmvc.repos.MessageRepos;
+import com.example.springmvc.repos.UserRepos;
 import com.example.springmvc.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +33,7 @@ public class MainController {
     private String uploadPath;
     private final ImageService imageService;
     private final MessageRepos messageRepos;
+    private final UserRepos userRepos;
 
 
 
@@ -39,18 +42,7 @@ public class MainController {
         return "main_think/greeting";
     }
 
-    @GetMapping("/main")
-    public String main(@RequestParam(required = false, defaultValue = "") String filter,
-                       Model model) {
-        Iterable<Message> messages;
-        if (filter != null && !filter.isEmpty())
-            messages = messageRepos.findByTag(filter);
-        else
-            messages = messageRepos.findAll();
-        model.addAttribute("messages", messages);
-        model.addAttribute("filter", filter);
-        return "main_think/main";
-    }
+
 
     @PostMapping("/main")
     public String add(@Valid Message message,
@@ -65,8 +57,8 @@ public class MainController {
             model.addAttribute("message", message);
         } else {
             if (file != null && !file.getOriginalFilename().isEmpty()) {
-                String fileUrl = imageService.saveImage(file);
-                message.setImage(fileUrl);
+                Image image = imageService.saveImage(file);
+                message.setImage(image);
             }
             model.addAttribute("message", null);
             messageRepos.save(message);

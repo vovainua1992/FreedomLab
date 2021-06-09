@@ -31,7 +31,7 @@ public class ImageController {
                            @RequestParam("image") MultipartFile file) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         ImageDto image = new ImageDto();
-        image.setUrl(imageService.saveImage(file));
+        image.setUrl(imageService.saveImage(file).getUrl());
         image.setSize(480);
         return objectMapper.writeValueAsString(image);
     }

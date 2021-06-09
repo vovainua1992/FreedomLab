@@ -1,5 +1,6 @@
 package com.example.springmvc.dommain;
 
+import com.example.springmvc.dommain.enums.Color;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -14,9 +15,11 @@ public class Publish {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(name = "active")
     private boolean active;
-    @Column(name = "title_images")
-    private String titleImages;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "image_id")
+    private Image image;
     @Column(name = "title_names")
     private String titleNames;
     @Column(name = "text_html")
@@ -33,7 +36,7 @@ public class Publish {
         publish.setActive(false);
         publish.setAuthor(author);
         publish.setTitleNames("Назва публікації");
-        publish.setTitleImages(null);
+        publish.setImage(null);
         publish.setTextHtml("<p>Текст публікації</p>");
         return publish;
     }
@@ -44,6 +47,13 @@ public class Publish {
 
     public boolean isAuthor(User user) {
         return author.equals(user);
+    }
+
+    public String getImageUrl(){
+        if (image!=null)
+            return image.getUrl();
+        else
+            return "/static/icons/image.svg";
     }
 
 }

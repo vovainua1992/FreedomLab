@@ -1,7 +1,7 @@
 package com.example.springmvc.dommain;
 
+import com.example.springmvc.dommain.enums.Role;
 import lombok.Data;
-import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,37 +9,57 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Entity for users
  */
 @Entity
-@Table(name ="usr")
+@Table(name = "usr")
 @Data
-@ToString(includeFieldNames = true)
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private  Long id;
+    private Long id;
     @NotBlank(message = "Ваш логін не може бути пустим")
     private String username;
     @NotBlank(message = "Пароль не може бути порожнім")
     private String password;
-    private  boolean active;
-    @Column(columnDefinition = "varchar(255) default 'static/icons/image.svg'")
-    private String avatare;
+    private boolean active;
+    @OneToOne
+    @JoinColumn(name = "avatar_id")
+    private Avatar avatar;
+    @Transient
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "owner_id")
+    private Set<Gallery> galleries = new HashSet<>();
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns =@JoinColumn(name = "user_id"))
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
-
     @Email(message = "Не коректний емейл")
     @NotBlank(message = "Email не може бути порожнім")
     private String email;
     private String activationCode;
+    @Transient
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_subscriptions",
+            joinColumns = {@JoinColumn(name = "channel_id")},
+            inverseJoinColumns = {@JoinColumn(name = "subscriber_id")}
+    )
+    private Set<User> subscribers = new HashSet<>();
+    @Transient
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_subscriptions",
+            joinColumns = {@JoinColumn(name = "subscriber_id")},
+            inverseJoinColumns = {@JoinColumn(name = "channel_id")}
+    )
+    private Set<User> subscriptions = new HashSet<>();
 
-    public boolean isAdmin(){
+    public boolean isAdmin() {
         return roles.contains(Role.ADMIN);
     }
 
@@ -80,4 +100,15 @@ public class User implements UserDetails {
     public int hashCode() {
         return id.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", active=" + active +
+                '}';
+    }
+
+
 }

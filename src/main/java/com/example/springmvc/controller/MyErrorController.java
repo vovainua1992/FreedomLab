@@ -19,9 +19,9 @@ public class MyErrorController implements ErrorController {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         if (status != null) {
             Integer statusCode = Integer.valueOf(status.toString());
-
+            System.out.println(statusCode);
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
-                return "develop/error";
+                return "errors/404";
             } else if (statusCode == HttpStatus.FORBIDDEN.value()) {
                 return "errors/403";
             } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {

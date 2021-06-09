@@ -3,13 +3,14 @@
 
 <!-- Постер публікації -->
 <#macro publish_title publish>
+    <#assign url = publish.getImageUrl()>
     <div class="col" style="min-height: 450px; ">
         <a href="/news/${publish.id}" class="card card-cover h-100 overflow-hidden bg-dark rounded-5 shadow-lg"
            style=" text-decoration: none;
                    background-size: cover;
                    background-position: center;
                    background-repeat: no-repeat;
-                   background-image: url('${publish.titleImages!'/static/icons/image.svg'}');"
+                   background-image: url('${url!'/static/icons/image.svg'}');"
         >
             <div class="d-flex flex-column h-100  text-dark  ">
                 <div class="bg-white  d-flex justify-content-center" style="height: 15%;">

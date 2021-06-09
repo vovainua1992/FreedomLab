@@ -84,3 +84,12 @@ tabs .nav-link.active {
 .h-10 {
     height: 10%!important;
 }
+
+.rounded-right-5{
+    border-bottom-right-radius: 1rem!important;
+    border-top-right-radius: 1rem!important;
+    border-color: white!important;
+}
+#image-selector{
+    cursor: move;
+}

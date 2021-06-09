@@ -1,5 +1,6 @@
 package com.example.springmvc.controller;
 
+import com.example.springmvc.dommain.Image;
 import com.example.springmvc.dommain.Publish;
 import com.example.springmvc.dommain.User;
 import com.example.springmvc.repos.PublicationRepos;
@@ -133,8 +134,8 @@ public class PublicationController {
         Publish publish = publicationRepos.findById(id);
         publicationService.updatePoster(publish, visible, title);
         if (!imageTitle.isEmpty()) {
-            String urlImage = imageService.saveImage(imageTitle);
-            publish.setTitleImages(urlImage);
+            Image image = imageService.saveImage(imageTitle);
+            publish.setImage(image);
         }
         publicationRepos.save(publish);
         model.addAttribute("publish", publish);

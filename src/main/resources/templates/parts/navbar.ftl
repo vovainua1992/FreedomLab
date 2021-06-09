@@ -5,7 +5,7 @@
 <div class="w-100 bg-light bg-gradient">
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light  navbar-text">
-            <a class="navbar-brand ms-3" href="#">Freedom</a>
+            <a class="navbar-brand ms-3" href="/user/<#if user??>${user.id}<#else>#</#if>">Freedom</a>
             <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">

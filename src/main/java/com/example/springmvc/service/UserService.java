@@ -1,7 +1,9 @@
 package com.example.springmvc.service;
 
-import com.example.springmvc.dommain.Role;
+import com.example.springmvc.dommain.Gallery;
+import com.example.springmvc.dommain.enums.Role;
 import com.example.springmvc.dommain.User;
+import com.example.springmvc.dommain.enums.Type;
 import com.example.springmvc.repos.UserRepos;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
@@ -38,6 +41,7 @@ public class UserService implements UserDetailsService {
      * @throws UsernameNotFoundException
      */
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepos.findByUsername(username);
         ;
@@ -150,5 +154,33 @@ public class UserService implements UserDetailsService {
     public boolean removeUser(String id) {
         userRepos.deleteById(Long.parseLong(id));
         return true;
+    }
+
+    public void subscribe(User currentUser, long id) {
+        User account = userRepos.findById(id);
+        if (!account.equals(currentUser)){
+            Set<User> subscribers = account.getSubscribers();
+            if (!subscribers.contains(currentUser)){
+                subscribers.add(currentUser);
+            }
+            userRepos.save(account);
+        }
+    }
+
+    public void unsubscribe(User currentUser, long id) {
+        User account = userRepos.findById(id);
+        account.getSubscribers().remove(currentUser);
+    }
+
+    public void testCreateGallery(User user) {
+        Set<Gallery> galleries =user.getGalleries();
+        Gallery gallery= new Gallery();
+        gallery.setName("test");
+        gallery.setOwner(user);
+        gallery.setImages(new ArrayList<>());
+        gallery.setType(Type.CUSTOM);
+        galleries.add(gallery);
+        user.setGalleries(galleries);
+        userRepos.save(user);
     }
 }
