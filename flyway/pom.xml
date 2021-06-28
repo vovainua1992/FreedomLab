@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.freedom</groupId>
+    <artifactId>flyway</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>flyway</name>
+    <packaging>jar</packaging>
+    <description>Flyway Callbacks Demo</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>${flyway-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.19</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>7.9.0</version>
+                <configuration>
+                    <driver>org.postgresql.Driver</driver>
+                    <url>jdbc:postgresql://localhost:5432/tuto?useUnicode=true&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true&amp;useSSL=false</url>
+                    <user>postgres</user>
+                    <password>1295wasd</password>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <properties>
+        <flyway-core.version>5.2.3</flyway-core.version>
+        <flyway-maven-plugin.version>5.0.2</flyway-maven-plugin.version>
+    </properties>
+
+</project>
