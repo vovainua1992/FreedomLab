@@ -37,6 +37,7 @@ public class SubscribeController {
         return "redirect:/user/" + id;
     }
 
+    //refactor simplify method
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/subscribers/{id}")
     public String subscribers(@AuthenticationPrincipal User user,
@@ -52,6 +53,7 @@ public class SubscribeController {
         return "user/subscribe";
     }
 
+    //refactor simplify method
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/subscriptions/{id}")
     public String subscriptions(@AuthenticationPrincipal User user,

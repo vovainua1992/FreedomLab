@@ -2,7 +2,6 @@ package com.freedom.web.controller;
 
 import com.freedom.services.dommain.User;
 import com.freedom.services.dommain.dto.CaptchaResponseDto;
-import com.freedom.services.repos.UserRepos;
 import com.freedom.services.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +23,7 @@ import javax.validation.Valid;
 import java.util.Collections;
 import java.util.Map;
 
-import static com.freedom.web.controller.ControllersUtil.getErrors;
+import static com.freedom.services.utils.ControllersUtil.getErrors;
 
 /**
  * Контролер регістрації
@@ -32,12 +31,14 @@ import static com.freedom.web.controller.ControllersUtil.getErrors;
 @Controller
 @RequiredArgsConstructor
 public class RegistrationController {
-    private final UserRepos userRepos;
     private final UserService userService;
     private final RestTemplate restTemplate;
     private static final String CAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
     @Value("${recaptcha.secret}")
     private String captchaSecret;
+
+
+    //TODO union registration.ftl and login.ftl
 
     /**
      * Сторінка регістрації
@@ -49,6 +50,7 @@ public class RegistrationController {
         return "login/registration";
     }
 
+    //TODO refactor method post create registrationService or update userService
     /**
      * Post - запит регістрації нового користувача
      *
@@ -94,6 +96,7 @@ public class RegistrationController {
         return new RedirectView("/login");
     }
 
+    //TODO refactor activateUser
     /**
      * Підтвердження пошти
      *

@@ -8,7 +8,6 @@ import com.freedom.services.repos.PublicationRepos;
 import com.freedom.services.service.ImageService;
 import com.freedom.services.service.PublicationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -40,7 +39,6 @@ public class PublicationController {
 
     /**
      * Всі публікації.
-     *
      * @param model
      * @return Сторінка публікацій
      */
@@ -50,13 +48,11 @@ public class PublicationController {
         model.addAttribute("news", publicationRepos.findAllByActiveTrueAndTypeEqualsCustom(pageable));
         model.addAttribute("title", "Публікації");
         model.addAttribute("url","/news");
-        Page p = publicationRepos.findAllByActiveTrueAndTypeEqualsCustom(pageable);
         return "publish/publishes_view";
     }
 
     /**
      * Всі публікації користувача.
-     *
      * @param user
      * @param model
      * @return
@@ -73,7 +69,6 @@ public class PublicationController {
 
     /**
      * Сторінка перегляду публікації.
-     *
      * @param id -індифікатор публікації
      * @param model - контекст сторінки
      * @return
@@ -83,12 +78,13 @@ public class PublicationController {
                                      @AuthenticationPrincipal User user,
                                      Model model) {
         Publish publish = publicationRepos.findById(Long.parseLong(id));
-        boolean isEdit = publish.isEdit(user);
         model.addAttribute("publish", publish);
-        model.addAttribute("isEdit", isEdit);
+        model.addAttribute("isEdit", publish.isEdit(user));
         return "publish/publish_view";
     }
 
+
+    //TODO create method -publicationService.createPublish(user)
     /**
      * Створення публікації.
      *
@@ -103,6 +99,7 @@ public class PublicationController {
         return "publish/create_publish";
     }
 
+    //refactor simplify method
     /**
      * Редагування постеру публікації.
      *
@@ -120,8 +117,12 @@ public class PublicationController {
            throw new AccessDeniedException("403 returned");
         model.addAttribute("publish", publish);
         return "publish/create_publish";
+
     }
 
+
+
+    //refactor simplify method
     /**
      * Оновлення постеру новини
      *
@@ -149,6 +150,7 @@ public class PublicationController {
         return "publish/create_publish";
     }
 
+    //refactor simplify the method
     /**
      * Перемикання активності(видимості публікації)
      *
@@ -172,6 +174,8 @@ public class PublicationController {
         return "publish_view";
     }
 
+
+    //todo refactor
     /**
      * Видалення публікації.
      *
@@ -195,6 +199,7 @@ public class PublicationController {
             return new RedirectView("/news");
     }
 
+    //TODO simple refactor
     /**
      * Оновлення вмісту публікації (через редактор ContentTools)
      *

@@ -25,6 +25,7 @@ public class UserController {
     private final UserRepos userRepos;
     private final UserService userService;
 
+    //refactor user_list.ftl
     /**
      * Отримання списку користувачів
      *
@@ -38,6 +39,7 @@ public class UserController {
         return "user/userList";
     }
 
+    //refactor refactor user_edit.ftl
     /**
      * Редагування профілю для адміністрації
      *
@@ -55,6 +57,7 @@ public class UserController {
         return "user/userEdit";
     }
 
+    //refactor simply
     /**
      * Збереження налаштувань користувача
      *

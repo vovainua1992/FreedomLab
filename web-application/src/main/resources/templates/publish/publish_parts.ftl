@@ -24,37 +24,7 @@
     </a>
 </#macro>
 
-<#macro publish_title_legacy publish>
-    <#assign url = publish.getImageUrl()>
-    <div class="col" style="min-height: 450px; ">
-        <a href="/news/${publish.id}" class="card card-cover h-100 overflow-hidden bg-dark rounded-5 shadow-lg"
-           style=" text-decoration: none;
-                   background-size: cover;
-                   background-position: center;
-                   background-repeat: no-repeat;
-                   background-image: url('${url!'/static/icons/image.svg'}');"
-        >
-            <div class="d-flex flex-column h-100  text-dark  ">
-                <div class="bg-white  d-flex justify-content-center" style="height: 15%;">
-                    <h2 class="h2 align-middle mt-auto text-center">${publish.titleNames}</h2>
-                </div>
-                <ul class="d-flex list-unstyled mt-auto">
-                    <li class="me-auto">
-                    </li>
-                    <li class="d-flex align-items-center me-3">
-                        <small class="fw-bold">${publish.author.username}</small>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <svg class="bi me-2" width="1em" height="1em">
-                            <use xlink:href="#calendar3"></use>
-                        </svg>
-                        <small class="fw-bold"></small>
-                    </li>
-                </ul>
-            </div>
-        </a>
-    </div>
-</#macro>
+
 <!--Редагування постеру новини-->
 <#macro poster_edit publish>
     <div class="container-fluid px-4 py-5" id="custom-cards">

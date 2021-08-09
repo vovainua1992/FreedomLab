@@ -1,6 +1,5 @@
 package com.freedom.web.controller;
 
-
 import com.freedom.services.dommain.dto.ImageDto;
 import com.freedom.services.dommain.dto.ImageInsert;
 import com.freedom.services.service.ImageService;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 
 /**
@@ -24,7 +22,8 @@ import java.io.IOException;
 public class ImageController {
     private final ImageService imageService;
 
-
+    //TODO refactor remove test from freemarker post
+    //TODO create method in image service
     @PostMapping("/add")
     @ResponseBody
     public String addImage(@RequestParam("test") String test,
@@ -36,6 +35,7 @@ public class ImageController {
         return objectMapper.writeValueAsString(image);
     }
 
+    //TODO create method in imageSerice
     @PostMapping("/insert")
     @ResponseBody
     public String insertImage(@RequestParam("url") String url) throws IOException {

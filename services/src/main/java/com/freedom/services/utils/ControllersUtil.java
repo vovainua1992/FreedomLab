@@ -1,4 +1,4 @@
-package com.freedom.web.controller;
+package com.freedom.services.utils;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -18,7 +18,7 @@ public class ControllersUtil {
      * @param bindingResult
      * @return Map<String, String>
      */
-    static Map<String, String> getErrors(BindingResult bindingResult) {
+    public static Map<String, String> getErrors(BindingResult bindingResult) {
         Collector<FieldError, ?, Map<String, String>> collectors = Collectors.toMap(
                 fieldError -> fieldError.getField() + "Error",
                 FieldError::getDefaultMessage

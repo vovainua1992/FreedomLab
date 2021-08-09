@@ -15,7 +15,7 @@ public class MainController {
 
     @GetMapping("/")
     public String greeting(Map<String, Object> model) {
-        return "main_think/greeting";
+        return "about_project";
     }
 
 }
