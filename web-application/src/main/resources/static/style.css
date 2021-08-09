@@ -93,3 +93,38 @@ tabs .nav-link.active {
 #image-selector{
     cursor: move;
 }
+
+.ct-grip{
+    display: none!important;
+}
+
+.ct-toolbox{
+    top:0px!important;
+    left: 0px!important;
+    width: 100%!important;
+    height: auto!important;
+}
+
+.ct-tool-group{
+    width: 300px!important;
+    display: inline!important;
+}
+
+.ct-widget .ct-tool-group:after{
+    display: inline!important;
+
+}
+
+.nav-profile{
+    padding: unset!important;
+}
+
+.ct-ignition{
+    position: absolute!important;
+    right: 120px!important;
+}
+.ct-widget.ct-ignition{
+    left: unset!important;
+    top: 100px!important;
+
+}

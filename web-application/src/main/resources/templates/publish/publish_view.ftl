@@ -10,7 +10,7 @@
                    style=" margin-right:20px;background-image: url('/static/images/pencil.svg');
                         width: 25px;height: 25px; background-repeat: no-repeat; background-size: cover;"></a>
                 <a href="/news/activate/${publish.id}"
-                   style="margin-right: 50px; background-image: url(${publish.active?string("/static/images/eye.svg","/static/images/eyehide.svg")});
+                   style="margin-right:150px; background-image: url(${publish.active?string("/static/images/eye.svg","/static/images/eyehide.svg")});
                            width: 25px;height: 25px; background-repeat: no-repeat; background-size: cover;"></a>
             </#if>
         </div>
