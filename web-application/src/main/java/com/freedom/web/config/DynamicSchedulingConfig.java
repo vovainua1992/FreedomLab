@@ -1,5 +1,6 @@
 package com.freedom.web.config;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -11,11 +12,10 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 @Configuration
-@ComponentScan("com.example.springmvc.service")
+@ComponentScan({"com.freedom.services","com.freedom.web"})
 @EnableScheduling
+@EnableAutoConfiguration
 public class DynamicSchedulingConfig implements SchedulingConfigurer {
-
-
 
     @Bean
     public Executor taskExecutor() {

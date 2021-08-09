@@ -1,6 +1,6 @@
 package com.freedom.services.dommain;
 
-import com.freedom.services.dommain.enums.Color;
+import com.freedom.services.dommain.enums.PublishType;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -27,9 +27,10 @@ public class Publish {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private User author;
-    @Column(name = "color_text")
+    @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    private Color colorText;
+    private PublishType type;
+
 
     public static Publish EMPTY(User author) {
         Publish publish = new Publish();

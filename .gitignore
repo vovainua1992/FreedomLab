@@ -5,6 +5,7 @@ target/
 mvnw
 mvnw.cmd
 .mvn
+web-application/src/main/resources/static/bootstrap.min.css
 
 ### STS ###
 .apt_generated

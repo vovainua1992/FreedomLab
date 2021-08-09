@@ -27,13 +27,6 @@ public class User implements UserDetails {
     @NotBlank(message = "Пароль не може бути порожнім")
     private String password;
     private boolean active;
-    @OneToOne
-    @JoinColumn(name = "avatar_id")
-    private Avatar avatar;
-    @Transient
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "owner_id")
-    private Set<Gallery> galleries = new HashSet<>();
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -49,7 +42,7 @@ public class User implements UserDetails {
             joinColumns = {@JoinColumn(name = "channel_id")},
             inverseJoinColumns = {@JoinColumn(name = "subscriber_id")}
     )
-    private Set<User> subscribers = new HashSet<>();
+    private Set<User> subscribers = new HashSet<User>();
     @Transient
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -57,7 +50,7 @@ public class User implements UserDetails {
             joinColumns = {@JoinColumn(name = "subscriber_id")},
             inverseJoinColumns = {@JoinColumn(name = "channel_id")}
     )
-    private Set<User> subscriptions = new HashSet<>();
+    private Set<User> subscriptions = new HashSet<User>();
 
     public boolean isAdmin() {
         return roles.contains(Role.ADMIN);

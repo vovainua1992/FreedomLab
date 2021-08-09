@@ -5,9 +5,9 @@
             http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.2.RELEASE</version>
+        <groupId>com.freedom</groupId>
+        <artifactId>FreedomLab</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
         <relativePath/>
     </parent>
     <groupId>com.freedom</groupId>
@@ -15,10 +15,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>web-application</name>
     <description>Web application freedomLab</description>
-
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -52,16 +48,29 @@
 
         <dependency>
             <groupId>com.freedom</groupId>
-            <artifactId>services</artifactId>
+            <artifactId>service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-freemarker</artifactId>
+                </exclusion>
+                <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-web</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.freedom</groupId>
+            <artifactId>flyway</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.18</version>
-            <scope>provided</scope>
+            <version>1.18.20</version>
         </dependency>
     </dependencies>
 
@@ -70,7 +79,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${project.parent.version}</version>
             </plugin>
         </plugins>
     </build>

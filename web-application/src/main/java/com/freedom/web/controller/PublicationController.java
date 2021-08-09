@@ -1,17 +1,20 @@
 package com.freedom.web.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.freedom.services.dommain.Image;
 import com.freedom.services.dommain.Publish;
 import com.freedom.services.dommain.User;
 import com.freedom.services.repos.PublicationRepos;
 import com.freedom.services.service.ImageService;
 import com.freedom.services.service.PublicationService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,7 +37,6 @@ public class PublicationController {
     private final ImageService imageService;
     private final PublicationRepos publicationRepos;
     private final PublicationService publicationService;
-    private Logger logger = LogManager.getLogger("NewsController");
 
     /**
      * Всі публікації.
@@ -43,10 +45,13 @@ public class PublicationController {
      * @return Сторінка публікацій
      */
     @GetMapping()
-    public String getAll(Model model) {
-        model.addAttribute("news", publicationRepos.findAllByActiveTrue());
+    public String getAll(@PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
+                         Model model) {
+        model.addAttribute("news", publicationRepos.findAllByActiveTrueAndTypeEqualsCustom(pageable));
         model.addAttribute("title", "Публікації");
-        return "publish/titles";
+        model.addAttribute("url","/news");
+        Page p = publicationRepos.findAllByActiveTrueAndTypeEqualsCustom(pageable);
+        return "publish/publishes_view";
     }
 
     /**
@@ -58,28 +63,30 @@ public class PublicationController {
      */
     @GetMapping("/my")
     public String getMyAll(@AuthenticationPrincipal User user,
+                           @PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
                            Model model) {
-        model.addAttribute("news", publicationRepos.findAllByAuthor(user));
+        model.addAttribute("news", publicationRepos.findAllByAuthor(user,pageable));
         model.addAttribute("title", "Мої публікації");
-        return "publish/titles";
+        model.addAttribute("url","/news/my");
+        return "publish/publishes_view";
     }
 
     /**
-     * Сторінка публікації.
+     * Сторінка перегляду публікації.
      *
-     * @param id
-     * @param model
+     * @param id -індифікатор публікації
+     * @param model - контекст сторінки
      * @return
      */
     @GetMapping("{id}")
-    public String getNew(@PathVariable String id,
-                         @AuthenticationPrincipal User user,
-                         Model model) {
+    public String getPublishViewById(@PathVariable String id,
+                                     @AuthenticationPrincipal User user,
+                                     Model model) {
         Publish publish = publicationRepos.findById(Long.parseLong(id));
         boolean isEdit = publish.isEdit(user);
         model.addAttribute("publish", publish);
         model.addAttribute("isEdit", isEdit);
-        return "publish/news_view";
+        return "publish/publish_view";
     }
 
     /**
@@ -88,8 +95,8 @@ public class PublicationController {
      * @return
      */
     @GetMapping("/add")
-    public String newAdd(@AuthenticationPrincipal User user,
-                         Model model) {
+    public String addPublish(@AuthenticationPrincipal User user,
+                             Model model) {
         Publish publish = Publish.EMPTY(user);
         publicationRepos.save(publish);
         model.addAttribute("publish", publish);
@@ -110,7 +117,7 @@ public class PublicationController {
                        Model model) {
         Publish publish = publicationRepos.findById(Long.parseLong(id));
         if (!publish.isEdit(user))
-            return "403";
+           throw new AccessDeniedException("403 returned");
         model.addAttribute("publish", publish);
         return "publish/create_publish";
     }
@@ -162,7 +169,7 @@ public class PublicationController {
         }
         model.addAttribute("publish", publish);
         model.addAttribute("isEdit", isEdit);
-        return "publish/news_view";
+        return "publish_view";
     }
 
     /**

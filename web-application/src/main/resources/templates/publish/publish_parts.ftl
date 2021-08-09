@@ -3,6 +3,28 @@
 
 <!-- Постер публікації -->
 <#macro publish_title publish>
+    <a href="/news/${publish.id}" class="text-decoration-none  m-1">
+        <div class="row text-dark p-1 rounded-5 border-light bg-light border" style=" overflow: hidden;">
+            <div class="col-4">
+                <img src="${publish.getImageUrl()!'/static/icons/image.svg'}">
+            </div>
+            <div class="col-8" style="max-height: 200px;">
+                <div class="container">
+                    <div class="row-cols-1">
+                        <div class="col">
+                            <h3 class="h3">${publish.titleNames}</h3>
+                        </div>
+                        <div class="col"  >
+                           ${publish.textHtml}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+</#macro>
+
+<#macro publish_title_legacy publish>
     <#assign url = publish.getImageUrl()>
     <div class="col" style="min-height: 450px; ">
         <a href="/news/${publish.id}" class="card card-cover h-100 overflow-hidden bg-dark rounded-5 shadow-lg"
@@ -18,8 +40,6 @@
                 </div>
                 <ul class="d-flex list-unstyled mt-auto">
                     <li class="me-auto">
-                        <!--В майбутньому розкоментувати тут і добавити аватар користувача-->
-                        <!-- <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white"> -->
                     </li>
                     <li class="d-flex align-items-center me-3">
                         <small class="fw-bold">${publish.author.username}</small>
@@ -28,7 +48,6 @@
                         <svg class="bi me-2" width="1em" height="1em">
                             <use xlink:href="#calendar3"></use>
                         </svg>
-                        <!-- В майбутньому тут добавити дату або давність публікації-->
                         <small class="fw-bold"></small>
                     </li>
                 </ul>
@@ -36,8 +55,6 @@
         </a>
     </div>
 </#macro>
-
-
 <!--Редагування постеру новини-->
 <#macro poster_edit publish>
     <div class="container-fluid px-4 py-5" id="custom-cards">

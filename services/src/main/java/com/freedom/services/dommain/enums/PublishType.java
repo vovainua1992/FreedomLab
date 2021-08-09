@@ -1,5 +1,5 @@
 package com.freedom.services.dommain.enums;
 
-public enum Type {
-    CUSTOM,SYSTEM
+public enum PublishType {
+    SYSTEM,CUSTOM;
 }

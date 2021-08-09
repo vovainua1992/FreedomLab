@@ -6,8 +6,8 @@
             ${Session.SPRING_SECURITY_LAST_EXCEPTION.message}
         </div>
     </#if>
-    <div class="mt-1 h-100 text-center">
-        <main class="form-signin h-100 d-flex align-items-center">
+    <div class="my-auto justify-content-center text-center h-100">
+        <main class="form-signin d-flex align-self-center h-100">
             <form action="/login" method="post"
                   xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
                   class="align-middle">

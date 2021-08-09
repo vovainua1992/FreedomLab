@@ -25,7 +25,7 @@ public class MyErrorController implements ErrorController {
             } else if (statusCode == HttpStatus.FORBIDDEN.value()) {
                 return "errors/403";
             } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
-                return "develop/error";
+                return "errors/error";
             }
         }
         return "develop/error";

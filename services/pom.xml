@@ -5,21 +5,17 @@
             http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.2.RELEASE</version>
+        <groupId>com.freedom</groupId>
+        <artifactId>FreedomLab</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
         <relativePath/>
     </parent>
     <groupId>com.freedom</groupId>
-    <artifactId>services</artifactId>
+    <artifactId>service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>services</name>
     <description>Demo project</description>
     <packaging>jar</packaging>
-
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -85,8 +81,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.18</version>
-            <scope>provided</scope>
+            <version>1.18.20</version>
         </dependency>
 
         <dependency>
@@ -101,13 +96,11 @@
             </exclusions>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${project.parent.version}</version>
             </plugin>
         </plugins>
     </build>

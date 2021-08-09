@@ -1,8 +1,8 @@
 package com.freedom.services.service;
 
-import com.freedom.services.dommain.User;
 import com.freedom.services.dommain.enums.Role;
 import com.freedom.services.repos.UserRepos;
+import com.freedom.services.dommain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;

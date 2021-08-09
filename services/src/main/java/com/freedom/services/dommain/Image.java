@@ -5,7 +5,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Data
@@ -26,13 +25,7 @@ public class Image {
     private LocalDateTime uploadDateTime;
     @Column(name = "delete_date_time", columnDefinition = "TIMESTAMP")
     private LocalDateTime deleteDateTime;
-    @ManyToMany
-    @JoinTable(
-            name = "gallery_images",
-            joinColumns = {@JoinColumn(name = "image_id")},
-            inverseJoinColumns = {@JoinColumn(name = "gallery_id")}
-    )
-    private List<Gallery> galleries;
+
 
     public static Image newImage(String name, String url, LocalDateTime load_time) {
         Image image = new Image();
