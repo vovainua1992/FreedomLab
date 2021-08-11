@@ -26,7 +26,6 @@ public class Image {
     @Column(name = "delete_date_time", columnDefinition = "TIMESTAMP")
     private LocalDateTime deleteDateTime;
 
-
     public static Image newImage(String name, String url, LocalDateTime load_time) {
         Image image = new Image();
         image.setName(name);

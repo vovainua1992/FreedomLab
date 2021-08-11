@@ -6,9 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Map;
 
-/**
- * Контролер головної сторінки (в розробці)
- */
 @Controller
 @RequiredArgsConstructor
 public class MainController {

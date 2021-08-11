@@ -32,7 +32,7 @@ public class Publish {
     private PublishType type;
 
 
-    public static Publish EMPTY(User author) {
+    public static Publish newForAuthor(User author) {
         Publish publish = new Publish();
         publish.setActive(false);
         publish.setAuthor(author);

@@ -15,9 +15,6 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Map;
 
-/**
- * Контроллер редагування користувачів
- */
 @Controller
 @RequestMapping("/user")
 @AllArgsConstructor
@@ -26,12 +23,6 @@ public class UserController {
     private final UserService userService;
 
     //refactor user_list.ftl
-    /**
-     * Отримання списку користувачів
-     *
-     * @param model
-     * @return
-     */
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping()
     public String userList(Model model) {
@@ -40,13 +31,6 @@ public class UserController {
     }
 
     //refactor refactor user_edit.ftl
-    /**
-     * Редагування профілю для адміністрації
-     *
-     * @param id
-     * @param model
-     * @return
-     */
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/edit/{id}")
     public String userEditForm(@PathVariable String id,
@@ -57,45 +41,22 @@ public class UserController {
         return "user/userEdit";
     }
 
-    //refactor simply
-    /**
-     * Збереження налаштувань користувача
-     *
-     * @param form
-     * @param id
-     * @return
-     */
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public String userSave(@RequestParam Map<String, String> form,
-                           @RequestParam("userId") String id) {
-        User editsUser = userRepos.findById(Long.parseLong(id));
-        userService.updateUserAuthority(editsUser, form);
+                           @RequestParam("userId") long id) {
+        userService.updateUserAuthority(userRepos.findById(id), form);
         return "redirect:/user";
     }
 
-    /**
-     * Видалення користувачів
-     *
-     * @param attributes
-     * @param id
-     * @return
-     */
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/delete/{id}")
     public RedirectView delete(RedirectAttributes attributes,
-                               @PathVariable String id) {
+                               @PathVariable long id) {
         userService.removeUser(id);
         return new RedirectView("/user");
     }
 
-    /**
-     * Налаштування профілю для користувача
-     *
-     * @param model
-     * @param user
-     * @return
-     */
     @GetMapping("/profile")
     public String getProfile(Model model,
                              @AuthenticationPrincipal User user) {
@@ -104,23 +65,12 @@ public class UserController {
         return "user/profile";
     }
 
-    /**
-     * Оновленя налаштувань профілю
-     *
-     * @param user
-     * @param username
-     * @param password
-     * @param password2
-     * @param email
-     * @return
-     */
     @PostMapping("/profile")
-    public String updateProfile(
-            @AuthenticationPrincipal User user,
-            @RequestParam(defaultValue = "") String username,
-            @RequestParam(defaultValue = "") String password,
-            @RequestParam(defaultValue = "") String password2,
-            @RequestParam(defaultValue = "") String email
+    public String updateProfile(@AuthenticationPrincipal User user,
+                                @RequestParam(defaultValue = "") String username,
+                                @RequestParam(defaultValue = "") String password,
+                                @RequestParam(defaultValue = "") String password2,
+                                @RequestParam(defaultValue = "") String email
     ) {
         userService.updateProfile(user, username, password, password2, email);
         return "redirect:/user/profile";

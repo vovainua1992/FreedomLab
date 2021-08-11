@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * Контроллер помилок
- */
 @Controller
 public class MyErrorController implements ErrorController {
 

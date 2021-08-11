@@ -3,12 +3,12 @@ package com.freedom.web.controller;
 import com.freedom.services.dommain.User;
 import com.freedom.services.dommain.dto.CaptchaResponseDto;
 import com.freedom.services.service.UserService;
+import com.freedom.services.utils.RegistrationValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,11 +23,6 @@ import javax.validation.Valid;
 import java.util.Collections;
 import java.util.Map;
 
-import static com.freedom.services.utils.ControllersUtil.getErrors;
-
-/**
- * Контролер регістрації
- */
 @Controller
 @RequiredArgsConstructor
 public class RegistrationController {
@@ -39,28 +34,11 @@ public class RegistrationController {
 
 
     //TODO union registration.ftl and login.ftl
-
-    /**
-     * Сторінка регістрації
-     *
-     * @return
-     */
     @GetMapping("/registration")
     public String registration() {
         return "login/registration";
     }
 
-    //TODO refactor method post create registrationService or update userService
-    /**
-     * Post - запит регістрації нового користувача
-     *
-     * @param confirmPassword
-     * @param captcha
-     * @param user
-     * @param bindingResult
-     * @param attributes
-     * @return
-     */
     @PostMapping("/registration")
     public RedirectView addUser(@RequestParam("password2") String confirmPassword,
                                 @RequestParam("g-recaptcha-response") String captcha,
@@ -69,22 +47,8 @@ public class RegistrationController {
                                 RedirectAttributes attributes) {
         String url = String.format(CAPTCHA_URL, captchaSecret, captcha);
         CaptchaResponseDto captchaResponse = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
-        if (!captchaResponse.isSuccess()) {
-            attributes.addFlashAttribute("captchaError", "Підтвердіть що ви не робот");
-        }
-        boolean isConfirmEmpty = StringUtils.isEmpty(confirmPassword);
-        if (isConfirmEmpty) {
-            attributes.addFlashAttribute("password2Error", "Поле підтвердження паролю маєбути заповненим!");
-            return new RedirectView("/registration");
-        }
-        if (user.getPassword() != null
-                && !user.getPassword().equals(confirmPassword)) {
-            attributes.addFlashAttribute("passwordError", "Паролі не співпадають");
-            attributes.addFlashAttribute("password2Error", "Паролі не співпадають");
-            return new RedirectView("/registration");
-        }
-        if (bindingResult.hasErrors() || !captchaResponse.isSuccess()) {
-            Map<String, String> errors = getErrors(bindingResult);
+        Map<String, String> errors = RegistrationValidator.collectionOfErrors(captchaResponse, confirmPassword, user, bindingResult);
+        if (!errors.isEmpty()) {
             errors.forEach(attributes::addFlashAttribute);
             return new RedirectView("/registration");
         }
@@ -92,18 +56,10 @@ public class RegistrationController {
             attributes.addFlashAttribute("usernameError", "Користувач із таким іменем уже є");
             return new RedirectView("/registration");
         }
-        attributes.addFlashAttribute("warn", "Будь ласка тепер підтвердіть свою почту");
+        attributes.addFlashAttribute("succ", "Будь ласка тепер підтвердіть свою почту");
         return new RedirectView("/login");
     }
 
-    //TODO refactor activateUser
-    /**
-     * Підтвердження пошти
-     *
-     * @param model
-     * @param code
-     * @return
-     */
     @GetMapping("/activate/{code}")
     public String activate(Model model,
                            @PathVariable String code) {

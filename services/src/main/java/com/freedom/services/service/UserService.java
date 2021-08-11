@@ -149,8 +149,8 @@ public class UserService implements UserDetailsService {
      * @param id
      * @return
      */
-    public boolean removeUser(String id) {
-        userRepos.deleteById(Long.parseLong(id));
+    public boolean removeUser(long id) {
+        userRepos.deleteById(id);
         return true;
     }
 
