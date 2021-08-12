@@ -2,7 +2,7 @@
 <#include "../parts/security.ftl">
 
 <@c.page>
-    <div class="container-xl mt-5" xmlns="http://www.w3.org/1999/html">
+    <div class="container-xl mt-5">
         <div class="row">
             <h2 class="col text-center">${publish.titleNames} </h2>
             <#if isEdit>

@@ -44,14 +44,13 @@ public class MailService {
     }
 
     /**
-     * Відправка коду активації
-     *
+     * Send the user an email with an activation code
      * @param user
      */
     public void sendActivateCode(User user) {
         Map<String, Object> map = new HashMap<>();
         map.put("name", user.getUsername());
-        map.put("link", buildActivateLink(user));
+        map.put("link", String.format("%s/activate/%s", url, user.getActivationCode()));
         if (!StringUtils.isEmpty(user.getEmail())) {
             try {
                 sendMessageUsingFreemarkerTemplate(
@@ -59,51 +58,41 @@ public class MailService {
                         user.getEmail(),
                         "Активація акаунту FreedomLab"
                         , map);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (TemplateException e) {
-                e.printStackTrace();
-            } catch (MessagingException e) {
+            } catch (MessagingException | TemplateException | IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
     /**
-     * Генерація зсилки коду активації
-     *
-     * @param user
-     * @return
+     * Send a text message via e-mail
+     * @param to the recipient of the e-mail
+     * @param subject the subject of the e-mail,
+     * @param message text of the e-mail
+     * @throws MessagingException
      */
-    private String buildActivateLink(User user) {
-        String link = String.format("%s/activate/%s", url, user.getActivationCode());
-        return link;
-    }
-
-    /**
-     * Відправка простих текстових повідомленнь
-     */
-    public void send(String emailTo,
+    public void send(String to,
                      String subject,
                      String message) {
-        Callable<Integer> callable = new Callable<Integer>() {
-            @Override
-            public Integer call() throws Exception {
-                SimpleMailMessage mailMessage = new SimpleMailMessage();
-                mailMessage.setFrom(username);
-                mailMessage.setTo(emailTo);
-                mailMessage.setSubject(subject);
-                mailMessage.setText(message);
+        Callable<Integer> callable = () -> {
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setFrom(username);
+            mailMessage.setTo(to);
+            mailMessage.setSubject(subject);
+            mailMessage.setText(message);
 
-                mailSender.send(mailMessage);
-                return 0;
-            }
+            mailSender.send(mailMessage);
+            return 0;
         };
         getExecutorService().submit(callable);
     }
 
     /**
-     * Для невеликих html повідомлень
+     * Send html e-mail
+     * @param to the recipient of the e-mail
+     * @param subject the subject of the e-mail,
+     * @param html the html text of the e-mail
+     * @throws MessagingException
      */
     public void sendMessageWithHTML(String to,
                                     String subject,
@@ -111,9 +100,6 @@ public class MailService {
         sendHtmlMessage(to, subject, html);
     }
 
-    /**
-     * Для відправки повідомлень Freemaker
-     */
     private void sendMessageUsingFreemarkerTemplate(String nameTemplate,
                                                     String to,
                                                     String subject,
@@ -124,9 +110,6 @@ public class MailService {
         sendHtmlMessage(to, subject, htmlBody);
     }
 
-    /**
-     * Функція відправки html повідомлення
-     */
     private void sendHtmlMessage(String to,
                                  String subject,
                                  String htmlBody) throws MessagingException {
@@ -148,9 +131,7 @@ public class MailService {
         getExecutorService().submit(callable);
     }
 
-    /**
-     * Отримання потоку відправника повідомлень
-     */
+    // Executor Service for sender email
     private ExecutorService getExecutorService() {
         if (executorService == null)
             executorService = Executors.newSingleThreadExecutor();

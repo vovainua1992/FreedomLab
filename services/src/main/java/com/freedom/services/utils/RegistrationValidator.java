@@ -29,7 +29,7 @@ public class RegistrationValidator {
         }
         if (bindingResult.hasErrors() || !captchaResponse.isSuccess()) {
             Map<String, String> bindingResultErrors = getErrors(bindingResult);
-            errors.forEach(errors::put);
+            bindingResultErrors.forEach(errors::put);
         }
         return errors;
     }

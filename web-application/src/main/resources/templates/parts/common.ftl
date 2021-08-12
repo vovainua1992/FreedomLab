@@ -17,7 +17,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     </head>
-    <body class="">
+    <body class="bg-light">
 
         <#include "navbar.ftl">
         <@sys.message />
@@ -34,6 +34,25 @@
     </body>
     </html>
 </#macro >
+
+<#macro mail_page>
+    <!DOCTYPE html>
+    <html lang="en" >
+    <head>
+        <meta charset="UTF-8">
+        <title>FreedomLab</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="_csrf" content="${_csrf.token}"/>
+    </head>
+    <body style="width: 100%; height: 100%;background: linear-gradient(#fafae3,#d7d7c8);">
+        <div style="width: 80%;height: 100%; margin: auto;">
+            <div style="width: 70%;height: 100%;margin-left: auto;"><#nested></div>
+        </div>
+    </body>
+    </html>
+</#macro>
+
 
 <#macro foter>
     <div class="container-flex h-25">

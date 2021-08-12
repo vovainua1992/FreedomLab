@@ -4,7 +4,7 @@
 
 
 <@c.page>
-   <div class="container p-2">
+   <div class="container-xxl">
            <#list news.content as publish>
                <@p.publish_title  publish/>
            <#else>

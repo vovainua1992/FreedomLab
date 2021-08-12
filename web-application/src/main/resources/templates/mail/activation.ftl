@@ -3,9 +3,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
-<body style="background: linear-gradient(#fafae3,#d7d7c8);">
-<table align="center" style="padding-top: 50px; background-color: #fafdff;max-width: 600px; width: 100%; height: 500px; border-radius: 1rem;
-    border-color: white; margin-top: 30px; margin-bottom: 50px;">
+<body style="background: linear-gradient(#fafae3,#d7d7c8); padding-top: 20px; padding-bottom: 20px;">
+<table align="center" style="padding-top: 50px; background: linear-gradient(#ffffff,#c0d2dc);max-width: 600px; width: 100%; height: 500px; border-radius: 1rem;
+    border: 3px solid #8593ec; margin-top: 30px; margin-bottom: 50px;font-family: var(--bs-font-sans-serif);font-size: 1rem;font-weight: 400;line-height: 1.5;">
     <tbody style="width: 100%;">
     <tr style="">
         <td style="alignment: center;">

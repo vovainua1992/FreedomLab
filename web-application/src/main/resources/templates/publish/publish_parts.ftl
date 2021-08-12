@@ -3,19 +3,21 @@
 
 <!-- Постер публікації -->
 <#macro publish_title publish>
-    <a href="/news/${publish.id}" class="text-decoration-none  m-1">
-        <div class="row text-dark p-1 rounded-5 border-light bg-light border" style=" overflow: hidden;">
-            <div class="col-4">
-                <img src="${publish.getImageUrl()!'/static/icons/image.svg'}">
-            </div>
-            <div class="col-8" style="max-height: 200px;">
-                <div class="container">
-                    <div class="row-cols-1">
-                        <div class="col">
-                            <h3 class="h3">${publish.titleNames}</h3>
-                        </div>
-                        <div class="col"  >
-                           ${publish.textHtml}
+    <a href="/news/${publish.id}" class="text-decoration-none h-auto m-3 row">
+        <div class="bg-blue-gradient rounded-5 p-1 shadow-lg">
+            <div class="row mx-0 align-items-center text-dark rounded-5 bg-white " style="overflow: hidden;">
+                <div class="col-12 col-md-5 col-lg-4 col-xl-3  align-content-center">
+                    <img class="rounded mx-auto d-block" src="${publish.getImageUrl()!'/static/icons/image.svg'}">
+                </div>
+                <div class="col-12 col-md-7 col-lg-8 col-xl-9" style="max-height: 200px;">
+                    <div class="container">
+                        <div class="row-cols-1">
+                            <div class="col">
+                                <h3 class="h3">${publish.titleNames}</h3>
+                            </div>
+                            <div class="col">
+                                ${publish.textHtml}
+                            </div>
                         </div>
                     </div>
                 </div>

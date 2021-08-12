@@ -32,8 +32,6 @@ public class RegistrationController {
     @Value("${recaptcha.secret}")
     private String captchaSecret;
 
-
-    //TODO union registration.ftl and login.ftl
     @GetMapping("/registration")
     public String registration() {
         return "login/registration";

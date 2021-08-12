@@ -40,7 +40,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>com.freedom</groupId>
             <artifactId>service</artifactId>

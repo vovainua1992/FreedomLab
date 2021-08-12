@@ -94,6 +94,59 @@ tabs .nav-link.active {
     cursor: move;
 }
 
+
+
+.nav-profile{
+    padding: unset!important;
+}
+.bg-blue-gradient{
+    background: linear-gradient(#7bacd2,#427fbf);
+}
+.bg-blue{
+    background:#7bacd2 ;
+}
+.bg-blue-dark{
+    background:#427fbf ;
+}
+.nav-link{
+    transition-duration: 0.4s;
+}
+
+.p-05{
+    padding: .125rem!important;
+}
+.nav-link:hover {
+    background: linear-gradient(#85b8e0, #478ad0);
+    color: white;
+}
+.logo{
+    font-size: 2.2rem!important;
+    padding: 0px!important;
+    font-weight:bold;
+    background: -webkit-linear-gradient(#fff900, #3489de);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-width: 0.05rem;
+    -webkit-text-stroke-color: #1f1f1f;
+}
+
+.logo-b{
+    font-size: 4rem;
+    font-weight:bold;
+    background: -webkit-linear-gradient(#fff900, #3489de);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-width: 0.1rem;
+    -webkit-text-stroke-color: #0e1f2b;
+}
+
+.ct-dialog{
+    width: 500px!important;
+    margin-left: -250px!important;
+}
+.ct-widget .ct-dialog__body{
+    width: 472px!important;
+}
 .ct-grip{
     display: none!important;
 }
@@ -112,19 +165,34 @@ tabs .nav-link.active {
 
 .ct-widget .ct-tool-group:after{
     display: inline!important;
-
 }
 
-.nav-profile{
-    padding: unset!important;
+.ct-widget{
+    width: 100%;
+    padding-right: var(--bs-gutter-x,.75rem);
+    padding-left: var(--bs-gutter-x,.75rem);
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1320px;
+}
+.ct-widget.ct-ignition {
+    top: unset!important;
+    bottom: 80px!important;
+    left: 50%!important;
+    transform: translate(-50%, 0);
 }
 
-.ct-ignition{
-    position: absolute!important;
-    right: 120px!important;
+.ct-toolbox{
+    left: 50%!important;
+    transform: translate(-50%, 0);
+    top: 7px!important;
 }
-.ct-widget.ct-ignition{
-    left: unset!important;
-    top: 100px!important;
 
+.ct-inspector{
+    left: 50%!important;
+    transform: translate(-50%, 0);
+}
+
+.ct-modal{
+    max-width: 100%!important;
 }

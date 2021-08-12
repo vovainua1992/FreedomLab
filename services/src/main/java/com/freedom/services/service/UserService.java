@@ -20,9 +20,7 @@ import org.springframework.util.StringUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Сервіс користувачів
- */
+
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
@@ -32,7 +30,7 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     /**
-     * Загрузка користувача
+     *Load UserDetails
      *
      * @param username
      * @return
@@ -42,7 +40,6 @@ public class UserService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepos.findByUsername(username);
-        ;
         if (user == null)
             throw new BadCredentialsException("Невірні дані користувача перевірте поля логіну та паролю");
         if (user.getActivationCode() != null)
@@ -51,9 +48,9 @@ public class UserService implements UserDetailsService {
     }
 
     /**
-     * Створення користувача
+     * Adds the user to the database and send the activation code by mail
      *
-     * @param user
+     * @param user new user
      * @return
      */
     public boolean addUser(User user) {
@@ -71,10 +68,10 @@ public class UserService implements UserDetailsService {
     }
 
     /**
-     * Збереження користувачів
+     * Update user roles
      *
-     * @param user
-     * @param form
+     * @param user user to update roles
+     * @param form form of roles
      */
     public void updateUserAuthority(User user,
                                     Map<String, String> form) {
@@ -91,13 +88,13 @@ public class UserService implements UserDetailsService {
     }
 
     /**
-     * Оновлення профілю користувача
+     * Update user profile
      *
-     * @param user
-     * @param username
-     * @param password
-     * @param password2
-     * @param email
+     * @param user current user
+     * @param username new username
+     * @param password new password
+     * @param password2 confirmation of a new password
+     * @param email new email
      */
     public void updateProfile(User user,
                               String username,
@@ -129,9 +126,9 @@ public class UserService implements UserDetailsService {
     }
 
     /**
-     * Активація акаунту
+     * Activate account for this activation code
      *
-     * @param code
+     * @param code activation code
      * @return
      */
     public boolean activateUser(String code) {
@@ -144,9 +141,9 @@ public class UserService implements UserDetailsService {
     }
 
     /**
-     * Видаленя користувача
+     * Remove a user by id
      *
-     * @param id
+     * @param id user id for remove
      * @return
      */
     public boolean removeUser(long id) {
