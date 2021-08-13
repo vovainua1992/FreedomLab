@@ -6,12 +6,12 @@
     <parent>
         <groupId>com.freedom</groupId>
         <artifactId>FreedomLab</artifactId>
-        <version>0.1.4-SNAPSHOT</version>
+        <version>0.1.5-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>com.freedom</groupId>
     <artifactId>flyway</artifactId>
-    <version>0.1.4-SNAPSHOT</version>
+    <version>0.1.5-SNAPSHOT</version>
     <name>flyway</name>
     <packaging>jar</packaging>
     <description>Flyway Callbacks Demo</description>

@@ -5,6 +5,9 @@ import com.freedom.services.dommain.enums.Role;
 import com.freedom.services.repos.UserRepos;
 import com.freedom.services.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -25,8 +28,9 @@ public class UserController {
     //refactor user_list.ftl
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping()
-    public String userList(Model model) {
-        model.addAttribute("users", userRepos.findAll());
+    public String userList(@PageableDefault(sort = {"id"},direction = Sort.Direction.ASC) Pageable pageable,
+                           Model model) {
+        model.addAttribute("users", userRepos.findAll(pageable));
         return "user/userList";
     }
 

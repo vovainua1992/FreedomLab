@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Publish controller
  */
@@ -19,4 +21,6 @@ public interface PublicationRepos extends CrudRepository<Publish, Long> {
     Publish findById(long id);
 
     Page<Publish> findAllByAuthor(User author,Pageable pageable);
+
+    List<Publish> findAllByAuthor(User user);
 }

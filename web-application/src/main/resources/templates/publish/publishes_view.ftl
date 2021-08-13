@@ -6,7 +6,7 @@
 <@c.page>
     <div class="container-xxl">
         <#list news.content as publish>
-            <@p.publish_title  publish/>
+            <@p.publish_title  publish false></@p.publish_title>
         <#else>
             <div class="text-center justify-content-center h-100">
                 <h3>Немає публікацій</h3>

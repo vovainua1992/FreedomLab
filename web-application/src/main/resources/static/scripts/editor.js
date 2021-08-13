@@ -3,6 +3,10 @@ let id_news;
 editor = ContentTools.EditorApp.get();
 editor.init('*[data-editable]', 'data-name');
 ContentTools.IMAGE_UPLOADER = imageUploader;
+
+
+
+
 function addImagesClass(){
     const list = document.getElementById('edit').getElementsByTagName("IMG");
     for (element of list){

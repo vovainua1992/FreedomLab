@@ -20,11 +20,11 @@
         <div class="row">
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="poster" role="tabpanel"
-                     aria-labelledby="home-tab"><@parts.poster_edit publish /></div>
+                     aria-labelledby="home-tab"><@parts.publish_title publish true/></div>
                 <div class="tab-pane fade h-100" id="content" role="tabpanel"
                      aria-labelledby="profile-tab"><@parts.info/></div>
             </div>
         </div>
-
     </div>
+    <script src="/static/scripts/index.js"></script>
 </@c.page>

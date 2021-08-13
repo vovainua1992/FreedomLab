@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -73,5 +74,10 @@ public class PublicationService {
             publish.setActive(!publish.isActive());
             publicationRepos.save(publish);
         }
+    }
+
+    public void removeAuthor(User removeAuthor,User deletedSystemUser) {
+        List<Publish> publishes = publicationRepos.findAllByAuthor(removeAuthor);
+        publishes.forEach((Publish p)->{p.setAuthor(deletedSystemUser);});
     }
 }

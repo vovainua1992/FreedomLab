@@ -80,9 +80,8 @@ public class PublicationController {
                                @RequestParam("title") String title,
                                @RequestParam("file") MultipartFile imageTitle,
                                Model model) throws IOException {
-
-        model.addAttribute("publish", publicationService.updatePoster(id,visible,title,imageTitle));
-        return "publish/create_publish";
+        publicationService.updatePoster(id,visible,title,imageTitle);
+        return "redirect:/news/my";
     }
 
     @GetMapping("/activate/{id}")

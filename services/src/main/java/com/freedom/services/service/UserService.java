@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
     private final UserRepos userRepos;
     private final MailService mailService;
+    private final PublicationService publicationService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -147,6 +148,7 @@ public class UserService implements UserDetailsService {
      * @return
      */
     public boolean removeUser(long id) {
+        publicationService.removeAuthor(userRepos.findById(id), userRepos.findById(207));
         userRepos.deleteById(id);
         return true;
     }

@@ -2,8 +2,6 @@ body,html {
     height: 100%;
 }
 
-/* Alignment styles for images, videos and iframes in editable regions */
-
 /* Center (default) */
 [data-editable] iframe,
 [data-editable] image,
@@ -45,6 +43,9 @@ body,html {
     text-align: right;
 }
 
+.auto-min-height{
+    min-height: calc(100% - 80px);
+}
 .form-signin {
     width: 100%;
     max-width: 480px;

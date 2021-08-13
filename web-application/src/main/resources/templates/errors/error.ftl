@@ -1,6 +1,5 @@
 <#import "../parts/common.ftl" as c>
 <#import "../parts/log.ftl" as l>
-<#import "../parts/message.ftl" as mess>
 <#import "../user/user_parts.ftl" as user >
 
 <@c.page>
