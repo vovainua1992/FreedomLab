@@ -21,15 +21,10 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="poster" role="tabpanel"
                      aria-labelledby="home-tab"><@parts.poster_edit publish /></div>
-                <div class="tab-pane fade" id="content" role="tabpanel"
+                <div class="tab-pane fade h-100" id="content" role="tabpanel"
                      aria-labelledby="profile-tab"><@parts.info/></div>
             </div>
         </div>
-        <div class="row">
-            <div class="offset-6 col-1"><a class="btn-light btn h-6 fw-bold text-dark" href="/news/delete/${publish.id}"
-                                           style="text-decoration: none;">Видалити</a></div>
-            <div class=" col-1"><a class="btn-light btn h-6 fw-bold text-dark" href="/news/${publish.id}"
-                                   style="text-decoration: none;">Зберегти</a></div>
-        </div>
+
     </div>
 </@c.page>

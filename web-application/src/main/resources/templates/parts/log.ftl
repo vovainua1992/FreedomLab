@@ -1,7 +1,7 @@
 <#macro login path isRegisterForm>
-    <div class="container text-center justify-content-center  d-flex" style="height: calc(100% - 63px);">
+    <div class="container text-center justify-content-center  d-flex" style="height: calc(100% - 80px);min-height:${isRegisterForm?string('750px','500px')}; ">
         <form class="align-content-center align-self-center" action="${path}" method="post"
-              xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" style="${isRegisterForm?string('','margin-top:-200px;')}width: 400px;">
+              xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" style="${isRegisterForm?string('','margin-top:-100px;')}width: 400px;">
             <div class="logo-b m-3" style="">Freedom</div>
             <h3 class="h3 mb-5 text-center">${isRegisterForm?string('Регістрація','Авторизація')}</h3>
             <div class="form-floating shadow">

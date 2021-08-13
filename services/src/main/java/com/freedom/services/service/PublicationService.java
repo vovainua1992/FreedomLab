@@ -49,9 +49,6 @@ public class PublicationService {
     public void updateContent(String json, Publish publish) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         PublishContent publishContent = objectMapper.readValue(json, PublishContent.class);
-        publishContent.getRegions().forEach((r) -> {
-            System.out.println(r.toString());
-        });
         publish.setTextHtml(publishContent.getHtml());
         publicationRepos.save(publish);
     }

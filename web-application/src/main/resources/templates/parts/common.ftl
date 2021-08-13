@@ -17,13 +17,14 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     </head>
-    <body class="bg-light">
+    <body class="d-flex flex-column bg-light h-100">
 
         <#include "navbar.ftl">
         <@sys.message />
 
         <#nested>
 
+        <@footer/>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
                 integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG"
                 crossorigin="anonymous"></script>
@@ -49,21 +50,18 @@
         <div style="width: 80%;height: 100%; margin: auto;">
             <div style="width: 70%;height: 100%;margin-left: auto;"><#nested></div>
         </div>
+
     </body>
     </html>
 </#macro>
 
 
-<#macro foter>
-    <div class="container-flex h-25">
-        <div class="row align-items-end h-100">
-            <footer class="col align-self-end bg-light text-center">
+<#macro footer>
+            <footer class="mt-auto py-3">
                 <div class="text-center bg-light bg-gradient">
                     © 2021, FreedomLab. Все права сохранены.
                 </div>
             </footer>
-        </div>
-    </div>
 </#macro>
 
 <#macro left_menu>

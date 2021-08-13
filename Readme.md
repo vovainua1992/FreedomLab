@@ -1,6 +1,6 @@
 # *FreedomLab*
 ##### (multi-module project)
-###### version  0.1.2-alpha
+###### version  0.1.4 SNAPSHOT
 
 A simple social blogging project.  
 A project created to study the spring framework.
@@ -20,4 +20,4 @@ A project created to study the spring framework.
 >    - spring boot v.2.3.2
 >    - Bootstrap v5
 >    - Content-Tools (java-script editor)
->    -  jquery
+>    - jquery
