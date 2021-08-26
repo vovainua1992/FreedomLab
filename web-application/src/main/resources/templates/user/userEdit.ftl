@@ -4,31 +4,31 @@
     <div class="container-xxl pt-2 auto-min-height">
         <div class="row justify-content-center h-100">
             <form class="col align-self-center form-control" style="max-width: 480px;" action="/user" method="post">
-                <h3 class="text-center col-12">Налаштування ролей користувача: "${user.username}" </h3>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Роль</th>
-                        <th scope="col">Наявність</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <#list roles as role>
+                <h5 class="text-center col-12">Налаштування ролей користувача: "${user.username}" </h5>
+                <div class="offset-1 col-10">
+                    <table class="table  mt-4">
+                        <thead>
                         <tr>
-                            <th scope="row"><label class="ms-1 form-check-label" for="check${role}">${role}</label></th>
-                            <td>
-                                <input id="check${role}"
-                                       class="ms-5 form-check-input"
-                                       type="checkbox"
-                                       name="${role}" ${user.roles?seq_contains(role)?string("checked","")}/>
-                            </td>
+                            <th scope="col">Роль</th>
+                            <th scope="col">Наявність</th>
                         </tr>
-                        <input id="check${role}" class="ms-5 form-check-input" type="checkbox"
-                               name="${role}" ${user.roles?seq_contains(role)?string("checked","")}>
-                        <label class="ms-1 form-check-label" for="check${role}">${role}</label>
-                    </#list>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        <#list roles as role>
+                            <tr>
+                                <th scope="row"><label class="ms-1 form-check-label" for="check${role}">${role}</label>
+                                </th>
+                                <td>
+                                    <input id="check${role}"
+                                           class="ms-5 form-check-input"
+                                           type="checkbox"
+                                           name="${role}" ${user.roles?seq_contains(role)?string("checked","")}/>
+                                </td>
+                            </tr>
+                        </#list>
+                        </tbody>
+                    </table>
+                </div>
                 <input type="hidden" value="${user.id}" name="userId">
                 <input type="hidden" value="${_csrf.token}" name="_csrf"/>
                 <div class="container-xxl">

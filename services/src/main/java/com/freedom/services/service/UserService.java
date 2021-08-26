@@ -1,8 +1,8 @@
 package com.freedom.services.service;
 
+import com.freedom.services.dommain.User;
 import com.freedom.services.dommain.enums.Role;
 import com.freedom.services.repos.UserRepos;
-import com.freedom.services.dommain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,7 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,9 +31,10 @@ public class UserService implements UserDetailsService {
     private final PublicationService publicationService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    private final ImageService imageService;
 
     /**
-     *Load UserDetails
+     * Load UserDetails
      *
      * @param username
      * @return
@@ -91,11 +94,11 @@ public class UserService implements UserDetailsService {
     /**
      * Update user profile
      *
-     * @param user current user
-     * @param username new username
-     * @param password new password
+     * @param user      current user
+     * @param username  new username
+     * @param password  new password
      * @param password2 confirmation of a new password
-     * @param email new email
+     * @param email     new email
      */
     public void updateProfile(User user,
                               String username,
@@ -148,16 +151,16 @@ public class UserService implements UserDetailsService {
      * @return
      */
     public boolean removeUser(long id) {
-        publicationService.removeAuthor(userRepos.findById(id), userRepos.findById(207));
+        publicationService.removeAuthor(userRepos.findById(id), userRepos.findById(3));
         userRepos.deleteById(id);
         return true;
     }
 
     public void subscribe(User currentUser, long id) {
         User account = userRepos.findById(id);
-        if (!account.equals(currentUser)){
+        if (!account.equals(currentUser)) {
             Set<User> subscribers = account.getSubscribers();
-            if (!subscribers.contains(currentUser)){
+            if (!subscribers.contains(currentUser)) {
                 subscribers.add(currentUser);
             }
             userRepos.save(account);
@@ -169,4 +172,8 @@ public class UserService implements UserDetailsService {
         account.getSubscribers().remove(currentUser);
     }
 
+    public void updateAvatar(User user, MultipartFile file, int posX, int posY, int size) throws IOException {
+        user.setAvatar(imageService.createAvatar(file, posX, posY, size));
+        userRepos.save(user);
+    }
 }

@@ -55,7 +55,7 @@ public class PublicationService {
     }
 
     public Publish createPublishForAuthor(User user) {
-        Publish publish =Publish.newForAuthor(user);
+        Publish publish = Publish.newForAuthor(user);
         publicationRepos.save(publish);
         return publish;
     }

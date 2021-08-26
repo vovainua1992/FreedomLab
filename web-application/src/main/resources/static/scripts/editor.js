@@ -136,7 +136,7 @@ editor.addEventListener('saved', function (ev) {
     };
     xhr = new XMLHttpRequest();
     xhr.addEventListener('readystatechange', onStateChange);
-    xhr.open('POST', '/news/update/'+id_news);
+    xhr.open('POST', '/publish/update/'+id_news);
     xhr.setRequestHeader("x-csrf-token", token);
     xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
     console.log(jsonDate)

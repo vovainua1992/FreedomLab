@@ -5,7 +5,7 @@
     <#if isEdit>
         <form class="form align-middle"
         enctype="multipart/form-data"
-        action="/news/update_poster" method="post">
+        action="/publish/update_poster" method="post">
         <input type="hidden" name="publishId" value="${publish.id}"/>
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         <div class="container-xxl">
@@ -33,7 +33,7 @@
                 <div class="row mx-0 align-items-center text-dark rounded-5 bg-white "
                      style="overflow: hidden;">
                     <div class="col-12 col-md-5 col-lg-4 col-xl-3  align-content-center">
-                        <#if !isEdit><a href="/news/${publish.id}" class="text-decoration-none h-auto m-3 row"></#if>
+                        <#if !isEdit><a href="/publish/${publish.id}" class="text-decoration-none h-auto m-3 row"></#if>
                             <img ${isEdit?string('id="image"','')} class="rounded mx-auto d-block w-100 h-auto"
                                                                    src="${publish.getImageUrl()!'/static/icons/image.svg'}"/>
                             <#if !isEdit></a></#if>
@@ -42,7 +42,7 @@
                         <div class="container p-0">
                             <div class="row-cols-1">
                                 <div class="col">
-                                    <#if !isEdit><a href="/news/${publish.id}"
+                                    <#if !isEdit><a href="/publish/${publish.id}"
                                                     class="text-decoration-none text-secondary h-auto m-3 row"></#if>
                                         <h3 id="title" class="h3 text-center">${publish.titleNames}</h3>
                                         <#if !isEdit></a></#if>
@@ -62,14 +62,18 @@
                     Зберегти
                 </button>
                 <a class="col-12 my-1 col-md-6 btn-outline-primary btn"
-                   href="/news/edit/${publish.id}"
+                   href="/publish/edit/${publish.id}"
                    style="text-decoration: none;">Відмінити</a>
-                <a class="col-6 mt-5 col-md-2 btn-danger btn" href="/news/delete/${publish.id}"
+                <a class="col-6 mt-5 col-md-2 btn-danger btn" href="/publish/delete/${publish.id}"
                    style="text-decoration: none;">Видалити</a>
             </div>
         </div>
         </form>
     </#if>
+</#macro>
+
+<#macro publish_filter filter>
+
 </#macro>
 
 <#macro info>

@@ -25,6 +25,8 @@
             </tbody>
         </table>
     </div>
+
+    <script src="/static/scripts/image-editor.js"></script>
 </@c.page>
 
 <#--категорії профілю-->
@@ -55,9 +57,7 @@
     </div>
 </#macro>
 
-<#--    Налаштування профілю користувача-->
-<#macro seting_main>
-    ${message?ifExists}
+<#macro login>
     <form method="post">
         <div class="form-group row mt-3">
             <label class="col-sm-2 col-form-label"> Логін: </label>
@@ -71,6 +71,36 @@
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
     </form>
 </#macro>
+
+<#--    Налаштування профілю користувача-->
+<#macro seting_main>
+    <@login/>
+    <@seting_avatar/>
+</#macro>
+
+<!-- Налаштування аватарки користувача-->
+<#macro seting_avatar>
+    <div class="container-xxl">
+        <div class="row">
+            <div class="col"> Аватар:</div>
+            <div id="avatar-edit-box" class="d-block position-relative mx-auto w-100">
+                <img id="avatar-edit" <#if user.avatar?hasContent>src="${user.avatar.url}"
+                     <#else>src="/static/icons/image.svg"</#if>
+                     style="width: 100%; height: auto;"/>
+                <div id="image-selector" class="border shadow-lg rounded-circle border-gray position-absolute"
+                     style="
+                                 top: 100px;
+                                 left: 100px;
+                                 width: 100px;
+                                 height: 100px;border-style: dashed!important;">
+                </div>
+            </div>
+            <input class="form-control" id="image-file" type="file" name="file"/>
+            <a href="#" class="btn btn-outline-primary" onclick="postAvatar()">sendAvatar</a>
+        </div>
+    </div>
+</#macro>
+
 
 <!-- Налаштування безпеки -->
 <#macro setting_security>

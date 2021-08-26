@@ -13,9 +13,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.io.IOException;
 import java.util.Map;
 
 @Controller
@@ -25,7 +27,6 @@ public class UserController {
     private final UserRepos userRepos;
     private final UserService userService;
 
-    //refactor user_list.ftl
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping()
     public String userList(@PageableDefault(sort = {"id"},direction = Sort.Direction.ASC) Pageable pageable,
@@ -34,7 +35,18 @@ public class UserController {
         return "user/userList";
     }
 
-    //refactor refactor user_edit.ftl
+    @PreAuthorize("hasAuthority('USER')")
+    @PostMapping("/avatar/update")
+    @ResponseBody
+    public String updateAvatar(@AuthenticationPrincipal User user,
+                               @RequestParam("file") MultipartFile file,
+                           @RequestParam int posX,
+                           @RequestParam int posY,
+                           @RequestParam int size) throws IOException {
+        userService.updateAvatar(user,file,posX,posY,size);
+        return "ok";
+    }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/edit/{id}")
     public String userEditForm(@PathVariable String id,

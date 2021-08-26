@@ -12,26 +12,26 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/user/subscribe")
+@RequestMapping("/subscribe")
 @AllArgsConstructor
 public class SubscribeController {
     private final UserRepos userRepos;
     private final UserService userService;
 
     @PreAuthorize("hasAuthority('USER')")
-    @GetMapping("/subscribe/{id}")
+    @GetMapping("/add/{id}")
     public String subscribe(@AuthenticationPrincipal User currentUser,
                             @PathVariable long id) {
         userService.subscribe(currentUser, id);
-        return "redirect:/user/" + id;
+        return "redirect:/publish/all";
     }
 
     @PreAuthorize("hasAuthority('USER')")
-    @GetMapping("/unsubscribe/{id}")
+    @GetMapping("/remove/{id}")
     public String unsubscribe(@AuthenticationPrincipal User currentUser,
                               @PathVariable long id) {
         userService.unsubscribe(currentUser, id);
-        return "redirect:/user/" + id;
+        return "redirect:/publish/all";
     }
 
 }

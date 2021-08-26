@@ -35,28 +35,29 @@ public class User implements UserDetails {
     @NotBlank(message = "Email не може бути порожнім")
     private String email;
     private String activationCode;
-    @Transient
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_subscriptions",
             joinColumns = {@JoinColumn(name = "channel_id")},
             inverseJoinColumns = {@JoinColumn(name = "subscriber_id")}
     )
     private Set<User> subscribers = new HashSet<User>();
-    @Transient
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_subscriptions",
             joinColumns = {@JoinColumn(name = "subscriber_id")},
             inverseJoinColumns = {@JoinColumn(name = "channel_id")}
     )
     private Set<User> subscriptions = new HashSet<User>();
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    private Image avatar;
 
     public boolean isAdmin() {
         return roles.contains(Role.ADMIN);
     }
 
-    public boolean isMySubscriber(User user){
+    public boolean isSubscriber(User user){
         return subscribers.contains(user);
     }
 
@@ -104,6 +105,7 @@ public class User implements UserDetails {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", active=" + active +
+                ", avatar(image_id)="+avatar.getId()+
                 '}';
     }
 

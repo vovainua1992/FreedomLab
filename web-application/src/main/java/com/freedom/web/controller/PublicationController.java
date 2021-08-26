@@ -24,13 +24,13 @@ import java.io.IOException;
 
 
 @Controller
-@RequestMapping("/news")
+@RequestMapping("/publish")
 @RequiredArgsConstructor
 public class PublicationController {
     private final PublicationRepos publicationRepos;
     private final PublicationService publicationService;
 
-    @GetMapping()
+    @GetMapping("/all")
     public String getAll(@PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
                          Model model) {
         model.addAttribute("news", publicationRepos.findAllByActiveTrueAndTypeEqualsCustom(pageable));
@@ -78,17 +78,16 @@ public class PublicationController {
     public String updatePoster(@RequestParam(name = "checkVisible", defaultValue = "") String visible,
                                @RequestParam("publishId") long id,
                                @RequestParam("title") String title,
-                               @RequestParam("file") MultipartFile imageTitle,
-                               Model model) throws IOException {
+                               @RequestParam("file") MultipartFile imageTitle) throws IOException {
         publicationService.updatePoster(id,visible,title,imageTitle);
-        return "redirect:/news/my";
+        return "redirect:/publish/"+id;
     }
 
     @GetMapping("/activate/{id}")
     public String inverseActive(@PathVariable long id,
                                 @AuthenticationPrincipal User user) {
         publicationService.inverseActivePublish(id,user);
-        return "redirect:/news/{id}";
+        return "redirect:/publish/{id}";
     }
 
     @GetMapping("/delete/{id}")
@@ -98,13 +97,13 @@ public class PublicationController {
         Publish publish = publicationRepos.findById(id);
         if (!publicationService.delete(publish, user)) {
             attributes.addFlashAttribute("dang", "У вас немає прав видалити публікацію");
-            return new RedirectView("/news");
+            return new RedirectView("/publish");
         } else
             attributes.addFlashAttribute("succ", "Пулікацію видаленно");
         if (publish.isAuthor(user))
-            return new RedirectView("/news/my");
+            return new RedirectView("/publish/my");
         else
-            return new RedirectView("/news");
+            return new RedirectView("/publish");
     }
 
     @PostMapping(value = "/update/{id}",

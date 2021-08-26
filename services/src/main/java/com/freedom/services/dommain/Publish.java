@@ -4,6 +4,8 @@ import com.freedom.services.dommain.enums.PublishType;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Publish entity
@@ -30,6 +32,11 @@ public class Publish {
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private PublishType type;
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "tags", joinColumns = @JoinColumn(name = "publish_id"))
+    private List<String> tags;
+    @Column(name = "date_publication", columnDefinition = "TIMESTAMP")
+    private LocalDateTime dateCreate;
 
 
     public static Publish newForAuthor(User author) {
@@ -39,6 +46,8 @@ public class Publish {
         publish.setTitleNames("Назва публікації");
         publish.setImage(null);
         publish.setTextHtml("<p>Текст публікації</p>");
+        publish.setType(PublishType.CUSTOM);
+        publish.setDateCreate(LocalDateTime.now());
         return publish;
     }
 
@@ -55,6 +64,12 @@ public class Publish {
             return image.getUrl();
         else
             return "/static/icons/image.svg";
+    }
+
+    public String getDateTimeString(){
+        if(dateCreate==null)
+            return "Дуже давно";
+        return dateCreate.getHour()+":"+dateCreate.getMinute()+", "+dateCreate.getDayOfMonth()+"."+dateCreate.getMonth().getValue()+"."+dateCreate.getYear()+"p.";
     }
 
 }

@@ -2,6 +2,7 @@ package com.freedom.services.service;
 
 import com.freedom.services.dommain.Image;
 import com.freedom.services.repos.ImageRepository;
+import com.freedom.services.utils.ImageEditor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -11,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -18,7 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ImageService {
     private final ImageRepository imageRepository;
-
+    private final ImageEditor imageEditor;
     @Value("${upload.path}")
     private String uploadPath;
 
@@ -48,4 +51,10 @@ public class ImageService {
         return image;
     }
 
+    public Image createAvatar(MultipartFile file, int posX, int posY, int size) throws IOException {
+        Image avatar = saveImage(file);
+        Path path = Paths.get(uploadPath.substring(1)+"/"+avatar.getUrl().substring(5));
+        imageEditor.cropImage(path, posX, posY, size);
+        return avatar;
+    }
 }
