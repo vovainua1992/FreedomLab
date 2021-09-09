@@ -17,6 +17,8 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static com.freedom.services.utils.FilesUtil.duplicateFile;
+
 @Service
 @RequiredArgsConstructor
 public class ImageService {
@@ -51,10 +53,12 @@ public class ImageService {
         return image;
     }
 
-    public Image createAvatar(MultipartFile file, int posX, int posY, int size) throws IOException {
-        Image avatar = saveImage(file);
-        Path path = Paths.get(uploadPath.substring(1)+"/"+avatar.getUrl().substring(5));
-        imageEditor.cropImage(path, posX, posY, size);
-        return avatar;
+    public Image createDuplicate(Image image,String nameDuplicatesPrefix) throws IOException {
+        Path path = Paths.get(uploadPath.substring(1)+"/"+image.getUrl().substring(5));
+        String duplicateName = duplicateFile(path,"small");
+        Image duplicate = Image.newImage(nameDuplicatesPrefix+image.getName(),"/img/"+duplicateName,LocalDateTime.now());
+        return imageRepository.save(duplicate);
     }
+
+
 }

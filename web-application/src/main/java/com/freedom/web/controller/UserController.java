@@ -39,7 +39,7 @@ public class UserController {
     @PostMapping("/avatar/update")
     @ResponseBody
     public String updateAvatar(@AuthenticationPrincipal User user,
-                               @RequestParam("file") MultipartFile file,
+                               @RequestParam( required=false,name="file" ) MultipartFile file,
                            @RequestParam int posX,
                            @RequestParam int posY,
                            @RequestParam int size) throws IOException {

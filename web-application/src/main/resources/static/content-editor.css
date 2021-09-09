@@ -1,0 +1,115 @@
+/* Center (default) */
+[data-editable] iframe,
+[data-editable] image,
+[data-editable] [data-ce-tag=img],
+[data-editable] img,
+[data-editable] video {
+    clear: both;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+}
+
+
+/* Left align */
+[data-editable] .align-left {
+    clear: initial;
+    float: left;
+    margin-right: 0.5em;
+}
+
+/* Right align */
+[data-editable].align-right {
+    clear: initial;
+    float: right;
+    margin-left: 0.5em;
+}
+
+/* Alignment styles for text in editable regions */
+[data-editable] .text-center {
+    text-align: center;
+}
+
+[data-editable] .text-left {
+    text-align: left;
+}
+
+[data-editable] .text-right {
+    text-align: right;
+}
+
+.ct-dialog{
+    width: 500px!important;
+    margin-left: -250px!important;
+}
+.ct-widget .ct-dialog__body{
+    width: 472px!important;
+}
+.ct-grip{
+    display: none!important;
+}
+
+.ct-toolbox{
+    top:0px!important;
+    left: 0px!important;
+    width: 100%!important;
+    height: auto!important;
+}
+.ct-tool-groups{
+    height: 50px!important;
+    display: inline-block!important;
+}
+
+.ct-tool-group{
+    display: inline-block!important;
+}
+
+.ct-widget .ct-tool-group:after{
+    display: inline-block!important;
+}
+
+.ct-widget{
+    width: 100%;
+    padding-right: var(--bs-gutter-x,.75rem);
+    padding-left: var(--bs-gutter-x,.75rem);
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1320px;
+}
+.ct-widget.ct-ignition {
+    top: unset!important;
+    bottom: 50px!important;
+    left: 50%!important;
+    transform: translate(-50%, 0);
+}
+
+.ct-toolbox{
+    left: 50%!important;
+    transform: translate(-50%, 0);
+    top: 0px!important;
+    height: 66px!important;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    height: 80px;
+    white-space:nowrap
+}
+
+.ct-inspector{
+    display: none;
+    left: 50%!important;
+    transform: translate(-50%, 0);
+}
+
+.ct-modal{
+    max-width: 100%!important;
+}
+.publish-upload{
+    position: absolute;
+    right: 13px;
+    bottom: -48px;
+    background-color: #2980b9;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}

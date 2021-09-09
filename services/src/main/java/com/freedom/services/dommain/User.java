@@ -50,8 +50,8 @@ public class User implements UserDetails {
     )
     private Set<User> subscriptions = new HashSet<User>();
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "image_id", referencedColumnName = "id")
-    private Image avatar;
+    @JoinColumn(name = "avatar_id", referencedColumnName = "id")
+    private Avatar avatar;
 
     public boolean isAdmin() {
         return roles.contains(Role.ADMIN);

@@ -7,14 +7,39 @@ let posTop, posLeft;
 let elementSize;
 let newSize;
 let file;
+let isInit = true;
 const imageFile = document.getElementById("image-file");
+
+
 
 dragElement(imageSelector);
 imageFile.addEventListener("change", function () {
     getImgData();
-resizeImageSelector()
 });
 
+
+const resize_ob = new ResizeObserver(function(entries) {
+    if(!isInit)
+        resizeImageSelector()
+    else
+        isInit=false;
+});
+
+// start observing for resize
+resize_ob.observe(document.querySelector("#avatar-edit"));
+
+
+function  setPositionAndSize(posX,posY,size){
+    console.log('set position and size')
+    elementSize = size;
+    updateMaxSize()
+    imageSelector.style.left =posX+'px';
+    imageSelector.style.top =posY+'px';
+    posLeft = posX;
+    posTop = posY;
+    imageSelector.style.width = elementSize+'px';
+    imageSelector.style.height =elementSize+'px';
+}
 
 function getImgData() {
     file = imageFile.files[0];
@@ -28,12 +53,12 @@ function getImgData() {
 }
 
 function resizeImageSelector() {
+    elementSize = getMinSize()
     updateMaxSize();
-    elementSize = getMinSize();
     imageSelector.style.width = elementSize+'px';
     imageSelector.style.height =elementSize+'px';
-    setX(-(elementSize/2+elementSize/2));
-    setY(-(elementSize/2+elementSize/2));
+    setX(((box.offsetWidth-elementSize)/2));
+    setY(-box.offsetHeight/2);
 }
 
 function getMinSize() {
@@ -44,7 +69,7 @@ function getMinSize() {
 }
 
 function setX(x){
-    posLeft = x;
+    posLeft = x | 0;
     if (x<minX){
         imageSelector.style.left = minX+'px';
     }else if(x>maxX){
@@ -55,7 +80,7 @@ function setX(x){
 }
 
 function setY(y){
-    posTop = y;
+    posTop = y | 0;
     if (y<minY){
         imageSelector.style.top = minY+'px';
     }else if(y>maxY){
@@ -66,7 +91,6 @@ function setY(y){
 }
 
 function updateMaxSize() {
-    elementSize = imageSelector.offsetWidth;
     maxX = box.offsetWidth-elementSize;
     maxY = box.offsetHeight-elementSize;
 }
@@ -89,20 +113,16 @@ function dragElement(elmnt) {
             setX(elmnt.offsetLeft-delta/2);
             setY(elmnt.offsetTop-delta/2);
             elementSize = newSize;
-        }else {
         }
-
     }
 
     function dragMouseDown(e) {
         updateMaxSize();
         e = e || window.event;
         e.preventDefault();
-        // get the mouse cursor position at startup:
         pos3 = e.clientX;
         pos4 = e.clientY;
         document.onmouseup = closeDragElement;
-        // call a function whenever the cursor moves:
         document.onmousemove = elementDrag;
     }
 
@@ -116,12 +136,12 @@ function dragElement(elmnt) {
         posLeft = elmnt.offsetLeft - pos1
         if (maxX > posLeft && minX < posLeft) {
             pos3 = e.clientX;
-            elmnt.style.left = posLeft + "px";
+            setX(posLeft)
         }
 
         if (maxY > posTop && minY < posTop) {
             pos4 = e.clientY;
-            elmnt.style.top = posTop + "px";
+           setY(posTop)
         }
 
     }
@@ -136,8 +156,6 @@ function dragElement(elmnt) {
 }
 
 function postAvatar(){
-    if (!file)
-        return;
     let xhr;
     let  payload = new FormData();
     payload.append('file',file);

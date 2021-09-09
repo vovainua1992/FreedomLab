@@ -32,6 +32,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     private final ImageService imageService;
+    private final AvatarService avatarService;
 
     /**
      * Load UserDetails
@@ -173,7 +174,12 @@ public class UserService implements UserDetailsService {
     }
 
     public void updateAvatar(User user, MultipartFile file, int posX, int posY, int size) throws IOException {
-        user.setAvatar(imageService.createAvatar(file, posX, posY, size));
+        if (file != null)
+            user.setAvatar(avatarService.createAvatar(file, posX, posY, size));
+        else
+            user.setAvatar(avatarService.updateAvatar(user.getAvatar(), posX, posY, size));
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         userRepos.save(user);
     }
 }

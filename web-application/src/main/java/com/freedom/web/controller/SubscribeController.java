@@ -2,6 +2,7 @@ package com.freedom.web.controller;
 
 import com.freedom.services.dommain.User;
 import com.freedom.services.repos.UserRepos;
+import com.freedom.services.service.ImageService;
 import com.freedom.services.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +19,7 @@ public class SubscribeController {
     private final UserRepos userRepos;
     private final UserService userService;
 
+    //TODO change to rest
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/add/{id}")
     public String subscribe(@AuthenticationPrincipal User currentUser,
@@ -26,6 +28,7 @@ public class SubscribeController {
         return "redirect:/publish/all";
     }
 
+    //TODO change to rest
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/remove/{id}")
     public String unsubscribe(@AuthenticationPrincipal User currentUser,

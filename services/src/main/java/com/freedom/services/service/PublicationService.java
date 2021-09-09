@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -32,13 +34,11 @@ public class PublicationService {
             return false;
     }
 
-    public Publish updatePoster(long id, String visible, String title, MultipartFile imageTitle) throws IOException {
+    public Publish publication(long id, String title, MultipartFile imageTitle) throws IOException {
         Publish publish = publicationRepos.findById(id);
-        if (!visible.isEmpty())
-            publish.setActive(true);
-        else
-            publish.setActive(false);
+        publish.setActive(true);
         publish.setTitleNames(title);
+        publish.setDatePublication(LocalDateTime.now());
         if (!imageTitle.isEmpty()) {
             Image image = imageService.saveImage(imageTitle);
             publish.setImage(image);
@@ -54,8 +54,8 @@ public class PublicationService {
         publicationRepos.save(publish);
     }
 
-    public Publish createPublishForAuthor(User user) {
-        Publish publish = Publish.newForAuthor(user);
+    public Publish createPublish(User user, String name) {
+        Publish publish = Publish.newPublishByAuthorAndName(user,name);
         publicationRepos.save(publish);
         return publish;
     }

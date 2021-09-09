@@ -1,5 +1,6 @@
 <#import "../user/user_parts.ftl" as us>
 <#include "../parts/security.ftl" />
+
 <!-- Постер публікації -->
 <#macro publish_title publish isEdit>
     <#if isEdit>
@@ -12,17 +13,12 @@
             <div class="row pb-1">
                 <div class="col-12 col-md-6  col-lg-4">
                     <label class="form-text">Заставка для публікації:</label>
-                    <input class="form-control" id="image-file" type="file" name="file"/>
+                    <input class="form-control" id="image-poster-file" type="file" name="file"/>
                 </div>
                 <div class="col-12 col-md-6">
                     <label class="form-text">Заголовок:</label>
                     <input class="form-control" id="input-text" type="text" placeholder="Назва новини"
                            name="title" value="${publish.titleNames}"/>
-                </div>
-                <div class="col-5 col-lg-2 ms-auto mt-auto form-check form-switch">
-                    <input onclick="checkActive()" id="checkbox" class="ms-auto form-check-input" name="checkVisible" type="checkbox"
-                           id="flexSwitchCheckDefault" ${publish.active?string("checked"," ")} >
-                    <label id="active-text" class="ms-1 form-check-label" for="flexSwitchCheckDefault">${publish.active?string("Активована","Деактивована")}</label>
                 </div>
             </div>
         </div>
@@ -58,14 +54,12 @@
     <#if isEdit>
         <div class="container mt-2">
             <div class="row justify-content-end">
-                <button class="col-12 my-1 col-md-6 btn-outline-primary btn" type="submit">
-                    Зберегти
+                <a class="col-12 my-1 col-md-auto mx-md-auto btn-outline-primary btn"
+                   href="/publish/${publish.id}"
+                   style="text-decoration: none;">Назад</a>
+                <button class="col-12 my-1 col-md-auto mx-md-auto btn-outline-primary btn" type="submit">
+                    Опублікувати
                 </button>
-                <a class="col-12 my-1 col-md-6 btn-outline-primary btn"
-                   href="/publish/edit/${publish.id}"
-                   style="text-decoration: none;">Відмінити</a>
-                <a class="col-6 mt-5 col-md-2 btn-danger btn" href="/publish/delete/${publish.id}"
-                   style="text-decoration: none;">Видалити</a>
             </div>
         </div>
         </form>
@@ -76,8 +70,8 @@
 
 </#macro>
 
+<!-- Інформаційний блок при редагуванні постеру-->
 <#macro info>
-
     <div class="container-md py-5 h-100">
         <div class="row pt-5 mt-3">
             <h4 class="h3 text-center">Додаткова інформація</h4>
@@ -85,9 +79,9 @@
             <p>Головне що потрібно знати, коли користуєшся даним сайтом він ніразу не User-friendly. При виборі нової
                 заставки, або зміні заголовку у вікні передперегляду - можна побачити, як зміниться зовнішній вигляд
                 заголовку публікації.
-                В верхньому правому куті відображається перемикач активності публікації. Кнопка відмінити - відповідає
-                за відміну вчинених змін. Кнопка зберегти зберігає внесенні зміни та відправляє на сторінку "Мої
-                публікації" кнопка видалити видаляє публікацію. </p>
+                В верхньому правому куті відображається перемикач активності публікації. Кнопка назад повертає до редактування тексту публікації.
+                Кнопка опублікувати публікує статтю на сайті та робить її видимою для інших користувачів.
+            </p>
         </div>
     </div>
 </#macro>

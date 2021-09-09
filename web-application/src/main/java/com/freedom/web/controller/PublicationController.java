@@ -30,6 +30,8 @@ public class PublicationController {
     private final PublicationRepos publicationRepos;
     private final PublicationService publicationService;
 
+
+//TODO add filters
     @GetMapping("/all")
     public String getAll(@PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
                          Model model) {
@@ -39,6 +41,7 @@ public class PublicationController {
         return "publish/publishes_view";
     }
 
+//TODO add filters
     @GetMapping("/my")
     public String getMyAll(@AuthenticationPrincipal User user,
                            @PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
@@ -59,11 +62,14 @@ public class PublicationController {
         return "publish/publish_view";
     }
 
-    @GetMapping("/add")
+    //TODO change creations and publication
+    @PostMapping("/add")
     public String addPublish(@AuthenticationPrincipal User user,
+                             @RequestParam(name = "name") String name,
                              Model model) {
-        model.addAttribute("publish", publicationService.createPublishForAuthor(user));
-        return "publish/create_publish";
+        model.addAttribute("publish", publicationService.createPublish(user,name));
+        model.addAttribute("isEdit", true);
+        return "publish/publish_view";
     }
 
     @GetMapping("/edit/{id}")
@@ -71,15 +77,15 @@ public class PublicationController {
                        @PathVariable long id,
                        Model model) {
         model.addAttribute("publish", publicationService.getPublishForEditing(id,user));
-        return "publish/create_publish";
+        return "publish/edit_publish_poster";
     }
 
+
     @PostMapping("/update_poster")
-    public String updatePoster(@RequestParam(name = "checkVisible", defaultValue = "") String visible,
-                               @RequestParam("publishId") long id,
+    public String updatePoster(@RequestParam("publishId") long id,
                                @RequestParam("title") String title,
                                @RequestParam("file") MultipartFile imageTitle) throws IOException {
-        publicationService.updatePoster(id,visible,title,imageTitle);
+        publicationService.publication(id,title,imageTitle);
         return "redirect:/publish/"+id;
     }
 

@@ -14,6 +14,8 @@
     <#else>
         <#assign body = 1..page.getTotalPages()>
     </#if>
+
+
     <ul class="pagination" style="padding-left: 50%!important;">
         <#if page.hasPrevious()>
             <li class="page-item">

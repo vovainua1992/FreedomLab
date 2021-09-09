@@ -1,6 +1,6 @@
 # *FreedomLab*
 ##### (multi-module project)
-###### version  0.1.4 SNAPSHOT
+###### version  0.1.5 SNAPSHOT
 
 A simple social blogging project.  
 A project created to study the spring framework.

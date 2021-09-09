@@ -1,5 +1,19 @@
 <#import "sys_message.ftl" as sys>
-<#import "footer_scripts.ftl" as scripts>
+<#import "navbar.ftl" as n>
+<#assign
+scripts = []>
+
+<#macro add script_tag>
+    <#assign scripts= scripts+[script_tag]>
+</#macro>
+
+<#macro getAllScripts>
+    <#list scripts as script>
+        ${script}
+    <#else>
+    </#list>
+</#macro>
+
 <#macro page>
     <!DOCTYPE html>
     <html lang="en">
@@ -10,6 +24,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="_csrf" content="${_csrf.token}"/>
 
+        <link rel="stylesheet" href="/static/content-editor.css">
         <link rel="stylesheet" href="/static/style.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
@@ -20,13 +35,13 @@
     </head>
     <body class="d-flex flex-column bg-light h-100">
 
-        <#include "navbar.ftl">
+        <@n.navbar></@n.navbar>
         <@sys.message />
 
         <#nested>
 
         <@footer/>
-        <@scripts.getAll/>
+        <@getAllScripts/>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
                 integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG"
                 crossorigin="anonymous"></script>
@@ -61,7 +76,7 @@
 <#macro footer>
             <footer class="mt-auto py-3">
                 <div class="text-center bg-light bg-gradient">
-                    © 2021, FreedomLab. Все права сохранены.
+                    © 2021, FreedomLab. Всі права збережені.
                 </div>
             </footer>
 </#macro>

@@ -1,9 +1,7 @@
-const imageFile = document.getElementById("image-file");
+const imageFile = document.getElementById("image-poster-file");
 const imgPreview = document.getElementById("image");
 const input = document.getElementById('input-text');
 const title = document.getElementById('title');
-const checkbox = document.getElementById('checkbox');
-const activeText = document.getElementById('active-text');
 
 imageFile.addEventListener("change", function () {
     getImgData();
@@ -25,10 +23,3 @@ function updateValue(e) {
     title.textContent = e.target.value;
 }
 
-function checkActive(){
-    if(checkbox.checked===true){
-        activeText.textContent = 'Активована';
-    }else {
-        activeText.textContent = 'Деактивована';
-    }
-}

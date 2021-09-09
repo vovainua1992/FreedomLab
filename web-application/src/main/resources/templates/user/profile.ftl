@@ -83,24 +83,25 @@
     <div class="container-xxl">
         <div class="row">
             <div class="col"> Аватар:</div>
-            <div id="avatar-edit-box" class="d-block position-relative mx-auto w-100">
-                <img id="avatar-edit" <#if user.avatar?hasContent>src="${user.avatar.url}"
+            <div id="avatar-edit-box" class="d-block position-relative p-0 mx-auto w-100">
+                <img id="avatar-edit" <#if user.avatar?hasContent>src="${user.avatar.origin.url}"
                      <#else>src="/static/icons/image.svg"</#if>
-                     style="width: 100%; height: auto;"/>
+                     style="width: 100%; height: auto;" />
                 <div id="image-selector" class="border shadow-lg rounded-circle border-gray position-absolute"
                      style="
                                  top: 100px;
-                                 left: 100px;
-                                 width: 100px;
-                                 height: 100px;border-style: dashed!important;">
+                                 left: 100px;border-style: dashed!important;">
                 </div>
             </div>
             <input class="form-control" id="image-file" type="file" name="file"/>
             <a href="#" class="btn btn-outline-primary" onclick="postAvatar()">sendAvatar</a>
         </div>
     </div>
-</#macro>
+    <#if user.avatar?hasContent>
+        <@c.add '<script> setPositionAndSize(${user.avatar.smallPosX},${user.avatar.smallPosY},${user.avatar.smallSize})</script>'></@c.add>
+    </#if>
 
+</#macro>
 
 <!-- Налаштування безпеки -->
 <#macro setting_security>
