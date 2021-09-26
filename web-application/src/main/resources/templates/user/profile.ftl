@@ -57,20 +57,7 @@
     </div>
 </#macro>
 
-<#macro login>
-    <form method="post">
-        <div class="form-group row mt-3">
-            <label class="col-sm-2 col-form-label"> Логін: </label>
-            <div class="col-sm-4">
-                <input type="text" value="${name!''}" name="username" class="form-control" placeholder="User name"/>
-            </div>
-        </div>
-        <div class="offset-sm-2 col-sm-2 mt-5">
-            <button class="btn btn-primary m-2" type="submit">Зберегти</button>
-        </div>
-        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-    </form>
-</#macro>
+
 
 <#--    Налаштування профілю користувача-->
 <#macro seting_main>
@@ -78,23 +65,64 @@
     <@seting_avatar/>
 </#macro>
 
-<!-- Налаштування аватарки користувача-->
-<#macro seting_avatar>
+<#macro login>
     <div class="container-xxl">
         <div class="row">
-            <div class="col"> Аватар:</div>
+            <div class="col-auto ms-1">
+                <label> Логін: </label>
+            </div>
+            <div class="col-auto me-auto">
+                <div>${name!''}</div>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                        data-bs-target="#change-login">
+                    Змінити логін
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="change-login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true" style="margin-top: 10%">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Відредагуйте свій логін</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="w-75 mx-auto">
+                            <input type="text" value="${name!''}" name="username" class="form-control"
+                                   placeholder="User name"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Відмінити</button>
+                        <button type="submit" class="btn btn-primary">Зберегти</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</#macro>
+<!-- Налаштування аватарки користувача-->
+<#macro seting_avatar>
+    <div class="container-xxl mt-2">
+        <div class="row">
             <div id="avatar-edit-box" class="d-block position-relative p-0 mx-auto w-100">
                 <img id="avatar-edit" <#if user.avatar?hasContent>src="${user.avatar.origin.url}"
                      <#else>src="/static/icons/image.svg"</#if>
-                     style="width: 100%; height: auto;" />
+                     style="width: 100%; height: auto;"/>
                 <div id="image-selector" class="border shadow-lg rounded-circle border-gray position-absolute"
                      style="
                                  top: 100px;
                                  left: 100px;border-style: dashed!important;">
                 </div>
             </div>
-            <input class="form-control" id="image-file" type="file" name="file"/>
-            <a href="#" class="btn btn-outline-primary" onclick="postAvatar()">sendAvatar</a>
+            <input class="form-control" id="avatar-file" type="file" name="file"/>
+            <a href="#" class="btn btn-outline-primary" onclick="postAvatar()">Оновити аватар</a>
         </div>
     </div>
     <#if user.avatar?hasContent>

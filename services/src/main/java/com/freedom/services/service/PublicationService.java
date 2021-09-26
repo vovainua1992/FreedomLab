@@ -6,6 +6,7 @@ import com.freedom.services.dommain.Image;
 import com.freedom.services.dommain.Publish;
 import com.freedom.services.dommain.User;
 import com.freedom.services.dommain.dto.PublishContent;
+import com.freedom.services.dommain.dto.PublishDto;
 import com.freedom.services.repos.PublicationRepos;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -54,14 +55,14 @@ public class PublicationService {
         publicationRepos.save(publish);
     }
 
-    public Publish createPublish(User user, String name) {
+    public PublishDto createPublish(User user, String name) {
         Publish publish = Publish.newPublishByAuthorAndName(user,name);
-        publicationRepos.save(publish);
-        return publish;
+        Publish fromDb = publicationRepos.save(publish);
+        return publicationRepos.findById(fromDb.getId(),user);
     }
 
-    public Publish getPublishForEditing(long id, User user) {
-        Publish publish = publicationRepos.findById(id);
+    public PublishDto getPublishForEditing(long id, User user) {
+        PublishDto publish = publicationRepos.findById(id,user);
         if (publish.isEdit(user))
             return publish;
         else
@@ -77,7 +78,7 @@ public class PublicationService {
     }
 
     public void removeAuthor(User removeAuthor,User deletedSystemUser) {
-        List<Publish> publishes = publicationRepos.findAllByAuthor(removeAuthor);
-        publishes.forEach((Publish p)->{p.setAuthor(deletedSystemUser);});
+        List<PublishDto> publishes = publicationRepos.findAllByAuthor(removeAuthor);
+        publishes.forEach((PublishDto p)->{p.setAuthor(deletedSystemUser);});
     }
 }

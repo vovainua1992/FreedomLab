@@ -38,12 +38,13 @@ public class UserController {
     @PreAuthorize("hasAuthority('USER')")
     @PostMapping("/avatar/update")
     @ResponseBody
-    public String updateAvatar(@AuthenticationPrincipal User user,
-                               @RequestParam( required=false,name="file" ) MultipartFile file,
-                           @RequestParam int posX,
-                           @RequestParam int posY,
-                           @RequestParam int size) throws IOException {
-        userService.updateAvatar(user,file,posX,posY,size);
+    public String updateAvatar( @AuthenticationPrincipal User user,
+                                @RequestParam( required=false,name="file" ) MultipartFile file,
+                                @RequestParam( name="scale") Double  scalar,
+                                @RequestParam( required=false,name="posX",defaultValue = "50") Integer  posX,
+                                @RequestParam( required=false,name="posY",defaultValue = "50") Integer  posY,
+                                @RequestParam( required=false,name="size",defaultValue = "100") Integer  size) throws IOException {
+        userService.updateAvatar(user,file,scalar,posX,posY,size);
         return "ok";
     }
 

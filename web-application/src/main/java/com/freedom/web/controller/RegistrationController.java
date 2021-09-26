@@ -3,6 +3,7 @@ package com.freedom.web.controller;
 import com.freedom.services.dommain.User;
 import com.freedom.services.dommain.dto.CaptchaResponseDto;
 import com.freedom.services.service.UserService;
+import com.freedom.services.utils.EmailValidator;
 import com.freedom.services.utils.RegistrationValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +32,7 @@ public class RegistrationController {
     private static final String CAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
     @Value("${recaptcha.secret}")
     private String captchaSecret;
+    private EmailValidator emailValidator= new EmailValidator();
 
     @GetMapping("/registration")
     public String registration() {
@@ -46,6 +48,9 @@ public class RegistrationController {
         String url = String.format(CAPTCHA_URL, captchaSecret, captcha);
         CaptchaResponseDto captchaResponse = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
         Map<String, String> errors = RegistrationValidator.collectionOfErrors(captchaResponse, confirmPassword, user, bindingResult);
+        if(emailValidator.validate(user.getEmail())){
+             attributes.addFlashAttribute("emailError","Введено некоректний email!");
+         }
         if (!errors.isEmpty()) {
             errors.forEach(attributes::addFlashAttribute);
             return new RedirectView("/registration");

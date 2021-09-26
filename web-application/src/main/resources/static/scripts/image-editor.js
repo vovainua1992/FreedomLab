@@ -8,15 +8,12 @@ let elementSize;
 let newSize;
 let file;
 let isInit = true;
-const imageFile = document.getElementById("image-file");
-
-
+const avatarFile = document.getElementById("avatar-file");
 
 dragElement(imageSelector);
-imageFile.addEventListener("change", function () {
+avatarFile.addEventListener("change", function () {
     getImgData();
 });
-
 
 const resize_ob = new ResizeObserver(function(entries) {
     if(!isInit)
@@ -42,7 +39,7 @@ function  setPositionAndSize(posX,posY,size){
 }
 
 function getImgData() {
-    file = imageFile.files[0];
+    file = avatarFile.files[0];
     if (file) {
         const fileReader = new FileReader();
         fileReader.readAsDataURL(file);
@@ -53,6 +50,7 @@ function getImgData() {
 }
 
 function resizeImageSelector() {
+
     elementSize = getMinSize()
     updateMaxSize();
     imageSelector.style.width = elementSize+'px';
@@ -156,12 +154,15 @@ function dragElement(elmnt) {
 }
 
 function postAvatar(){
+    let scale = box.naturalWidth/box.clientWidth;
     let xhr;
     let  payload = new FormData();
     payload.append('file',file);
     payload.append('size',elementSize);
     payload.append('posX',posLeft);
     payload.append('posY',posTop);
+    payload.append('scale',scale);
+    console.log(scale)
     let xhrComplete = function (ev) {
         var response;
         if (ev.target.readyState != 4) {

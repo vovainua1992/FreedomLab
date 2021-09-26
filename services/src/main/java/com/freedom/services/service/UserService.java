@@ -5,6 +5,10 @@ import com.freedom.services.dommain.enums.Role;
 import com.freedom.services.repos.UserRepos;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -173,13 +177,49 @@ public class UserService implements UserDetailsService {
         account.getSubscribers().remove(currentUser);
     }
 
-    public void updateAvatar(User user, MultipartFile file, int posX, int posY, int size) throws IOException {
+    public void updateAvatar(User user, MultipartFile file,double scalar, int posX, int posY, int size) throws IOException {
+        if (size==0){
+            size = 100;
+        }
         if (file != null)
-            user.setAvatar(avatarService.createAvatar(file, posX, posY, size));
+            user.setAvatar(avatarService.createAvatar(file, scalar, posX, posY, size));
         else
-            user.setAvatar(avatarService.updateAvatar(user.getAvatar(), posX, posY, size));
+            user.setAvatar(avatarService.updateAvatar(user.getAvatar(), scalar, posX, posY, size));
         Authentication authentication = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         userRepos.save(user);
+    }
+    public Page<User> getMySubscribers(Pageable pageable, User currentUser) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<User> list;
+        List<User> subscribers = userRepos.findByUsername(currentUser.getUsername()).getSubscribers().stream().toList();
+        if (subscribers.size() < startItem) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, subscribers.size());
+            list = subscribers.subList(startItem, toIndex);
+        }
+
+        Page<User> subscribersPage= new PageImpl<User>(list, PageRequest.of(currentPage, pageSize), subscribers.size());
+        return subscribersPage;
+    }
+
+    public Page<User> getMySubscriptions(Pageable pageable, User currentUser) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<User> list;
+        List<User> subscriptions = userRepos.findByUsername(currentUser.getUsername()).getSubscriptions().stream().toList();
+        if (subscriptions.size() < startItem) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, subscriptions.size());
+            list = subscriptions.subList(startItem, toIndex);
+        }
+
+        Page<User> subscribersPage= new PageImpl<User>(list, PageRequest.of(currentPage, pageSize), subscriptions.size());
+        return subscribersPage;
     }
 }

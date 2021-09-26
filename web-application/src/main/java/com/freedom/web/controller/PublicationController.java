@@ -3,8 +3,12 @@ package com.freedom.web.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.freedom.services.dommain.Publish;
 import com.freedom.services.dommain.User;
+import com.freedom.services.dommain.dto.PublishDto;
+import com.freedom.services.dommain.dto.PublishesFilterDto;
 import com.freedom.services.repos.PublicationRepos;
+import com.freedom.services.service.CategoryService;
 import com.freedom.services.service.PublicationService;
+import com.freedom.services.utils.RedirectUrlBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,6 +25,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 
 @Controller
@@ -29,24 +36,62 @@ import java.io.IOException;
 public class PublicationController {
     private final PublicationRepos publicationRepos;
     private final PublicationService publicationService;
+    private final CategoryService categoryService;
 
 
 //TODO add filters
     @GetMapping("/all")
     public String getAll(@PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
+                         @AuthenticationPrincipal User user,
                          Model model) {
-        model.addAttribute("news", publicationRepos.findAllByActiveTrueAndTypeEqualsCustom(pageable));
+        model.addAttribute("isMy",false);
+        model.addAttribute("categories",categoryService.getAll());
+        model.addAttribute("publishes", publicationRepos.findAllByActiveTrueAndTypeCustom(pageable,user));
         model.addAttribute("title", "Публікації");
         model.addAttribute("url","/news");
         return "publish/publishes_view";
     }
 
+    @GetMapping("/filter")
+    public String getFilter(@PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
+                         @AuthenticationPrincipal User user,
+                         Model model) {
+        model.addAttribute("isMy",false);
+        List<String> tags = new ArrayList<>();
+        tags.add("freedom");
+        tags.add("test");
+        model.addAttribute("categories",categoryService.getAll());
+        model.addAttribute("publishes",
+                publicationRepos.findByFilter(pageable,tags,tags.size()));
+        model.addAttribute("title", "Публікації");
+        model.addAttribute("url","/news");
+        return "publish/publishes_view";
+    }
+
+    @PostMapping("/filter")
+    public String filter(@PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
+                         @RequestParam(name="filter") PublishesFilterDto category_id,
+                         @AuthenticationPrincipal User user,
+                         Model model) {
+        model.addAttribute("isMy",false);
+        List<String> tags = new ArrayList<>();
+        tags.add("freedom");
+        tags.add("test");
+        model.addAttribute("categories",categoryService.getAll());
+        model.addAttribute("publishes",
+                publicationRepos.findByFilter(pageable,tags,tags.size()));
+        model.addAttribute("title", "Публікації");
+        model.addAttribute("url","/news");
+        return "publish/publishes_view";
+    }
 //TODO add filters
     @GetMapping("/my")
     public String getMyAll(@AuthenticationPrincipal User user,
                            @PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
                            Model model) {
-        model.addAttribute("news", publicationRepos.findAllByAuthor(user,pageable));
+        model.addAttribute("isMy",true);
+        model.addAttribute("categories",categoryService.getAll());
+        model.addAttribute("publishes", publicationRepos.findAllByAuthor(user,user,pageable));
         model.addAttribute("title", "Мої публікації");
         model.addAttribute("url","/news/my");
         return "publish/publishes_view";
@@ -56,7 +101,7 @@ public class PublicationController {
     public String getPublishViewById(@PathVariable String id,
                                      @AuthenticationPrincipal User user,
                                      Model model) {
-        Publish publish = publicationRepos.findById(Long.parseLong(id));
+        PublishDto publish = publicationRepos.findById(Long.parseLong(id),user);
         model.addAttribute("publish", publish);
         model.addAttribute("isEdit", publish.isEdit(user));
         return "publish/publish_view";
@@ -70,6 +115,22 @@ public class PublicationController {
         model.addAttribute("publish", publicationService.createPublish(user,name));
         model.addAttribute("isEdit", true);
         return "publish/publish_view";
+    }
+
+    @GetMapping("/like/{id}")
+    public String like(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable Long id,
+            RedirectAttributes redirectAttributes,
+            @RequestHeader(required = false) String referer
+    ) {
+        Set<User> likes = publicationRepos.findById(id).get().getLikes();
+        if (likes.contains(currentUser)) {
+            likes.remove(currentUser);
+        } else {
+            likes.add(currentUser);
+        }
+        return RedirectUrlBuilder.buildRedirect(referer,redirectAttributes);
     }
 
     @GetMapping("/edit/{id}")

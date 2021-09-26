@@ -28,7 +28,6 @@ public class MyErrorController implements ErrorController {
         return "develop/error";
     }
 
-    @Override
     public String getErrorPath() {
         return "/error";
     }

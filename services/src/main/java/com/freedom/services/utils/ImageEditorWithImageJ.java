@@ -11,17 +11,16 @@ import java.nio.file.*;
 public class ImageEditorWithImageJ implements ImageEditor {
 
     @Override
-    public void cropImage(Path path, int posX, int posY, int size) {
-
+    public void cropImage(Path path,double scalar, int posX, int posY, int size) {
         ImagePlus imp = IJ.openImage(path.toString());
         ImageProcessor ip = imp.getProcessor();
-        double scalar = ip.getWidth()/658.0;
-        size =(int)Math.round(scalar*size);
-        Roi roi = new Roi(posX*scalar, posY*scalar, size, size); // x, y, width, height of the rectangle
+        System.out.println(scalar);
+        Roi roi = new Roi(posX/scalar+size/2.0*scalar, posY/scalar+size/2.0*scalar, size*scalar, size*scalar); // x, y, width, height of the rectangle
         ip.setRoi(roi);
         ip = ip.crop();
         imp = new ImagePlus(path.getFileName().toString(), ip);
         IJ.save(imp,path.toString());
+
     }
 
     public void mirrorHorizontal(Path path) {

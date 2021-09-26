@@ -22,12 +22,12 @@ public class AvatarService {
     private String uploadPath;
 
 
-    public Avatar createAvatar(MultipartFile file, int posX, int posY, int size) throws IOException {
+    public Avatar createAvatar(MultipartFile file,double scalar, int posX, int posY, int size) throws IOException {
         Avatar avatar = new Avatar();
         Image origin = imageService.saveImage(file);
         Image small = imageService.createDuplicate(origin,"small-");
         Path path = Paths.get(uploadPath.substring(1)+"/"+small.getUrl().substring(5));
-        imageEditor.cropImage(path, posX, posY, size);
+        imageEditor.cropImage(path, scalar, posX, posY, size);
         avatar.setOrigin(origin);
         avatar.setSmall(small);
         avatar.setSmallSize(size);
@@ -36,10 +36,10 @@ public class AvatarService {
         return avatar;
     }
 
-    public Avatar updateAvatar(Avatar avatar, int posX, int posY, int size) throws IOException {
+    public Avatar updateAvatar(Avatar avatar,double scalar, int posX, int posY, int size) throws IOException {
         Image small = imageService.createDuplicate(avatar.getOrigin(),"small-");
         Path path = Paths.get(uploadPath.substring(1)+"/"+small.getUrl().substring(5));
-        imageEditor.cropImage(path, posX, posY, size);
+        imageEditor.cropImage(path, scalar, posX, posY, size);
         avatar.setSmall(small);
         avatar.setSmallSize(size);
         avatar.setSmallPosX(posX);

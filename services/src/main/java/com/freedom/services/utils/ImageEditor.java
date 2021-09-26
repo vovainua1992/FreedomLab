@@ -5,7 +5,7 @@ import java.nio.file.Path;
 
 public interface ImageEditor {
 
-    void cropImage(Path path, int posX, int posY, int size);
+    void cropImage(Path path,double scalar, int posX, int posY, int size);
 
     void mirrorHorizontal(Path path);
 

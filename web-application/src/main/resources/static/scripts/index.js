@@ -4,8 +4,10 @@ const input = document.getElementById('input-text');
 const title = document.getElementById('title');
 
 imageFile.addEventListener("change", function () {
+    console.log('work')
     getImgData();
 });
+
 function getImgData() {
     const files = imageFile.files[0];
     if (files) {

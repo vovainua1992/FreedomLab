@@ -64,7 +64,7 @@
                 </div>
             </#if>
             <button class="btn-secondary btn w-50 mx-auto  my-4" type="submit">
-                ${isRegisterForm?string('Зареєструватись','Війти')}
+                ${isRegisterForm?string('Зареєструватись','Увійти')}
             </button>
             <a class=" link-secondary px-4 mx-5 pb-5" style="" href="/registration">Регістрація</a>
             <input type="hidden" name="_csrf" value="${_csrf.token}"/>

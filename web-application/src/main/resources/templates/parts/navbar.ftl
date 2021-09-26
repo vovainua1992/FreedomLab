@@ -7,7 +7,7 @@
         <div class="container">
             <div class="row align-content-center">
                 <nav class="col navbar navbar-expand-md navbar-light  navbar-text p-0">
-                    <a class="order-1 navbar-brand ms-3 p-0 logo" href="/user/<#if user??>${user.id}<#else>#</#if>">Freedom</a>
+                    <a class="order-1 navbar-brand ms-3 p-0 logo" href="#">Freedom</a>
                     <button class="order-0 navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
@@ -46,6 +46,12 @@
                             <li class="">
                                 <a class="dropdown-item" href="/publish/my">Мої публікації</a>
                             </li>
+                            <li class="">
+                                <a class="dropdown-item" href="/subscribe/all-subscribers">Мої підписники</a>
+                            </li>
+                            <li class="">
+                                <a class="dropdown-item" href="/subscribe/all-subscriptions">Мої підписки</a>
+                            </li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -60,7 +66,7 @@
                         </ul>
                     <#else>
                         <div class="row order-2 order-md-2">
-                            <a class="col-12 nav-link h5 text-white py-4 m-0" href="/login">Війти</a>
+                            <a class="col-12 nav-link h5 text-white py-4 m-0" href="/login">Увійти</a>
                         </div>
                     </#if>
                 </nav>

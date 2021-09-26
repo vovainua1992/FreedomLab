@@ -1,7 +1,8 @@
 <#import "sys_message.ftl" as sys>
 <#import "navbar.ftl" as n>
 <#assign
-scripts = []>
+scripts = []
+footer_auto = true>
 
 <#macro add script_tag>
     <#assign scripts= scripts+[script_tag]>
@@ -72,9 +73,12 @@ scripts = []>
     </html>
 </#macro>
 
+<#macro footer_disable_auto>
+    <#assign footer_auto = false/>
+</#macro>
 
 <#macro footer>
-            <footer class="mt-auto py-3">
+            <footer class="${footer_auto?string('mt-auto','')} py-3">
                 <div class="text-center bg-light bg-gradient">
                     © 2021, FreedomLab. Всі права збережені.
                 </div>

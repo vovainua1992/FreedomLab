@@ -1,13 +1,16 @@
 package com.freedom.services.dommain;
 
 import com.freedom.services.dommain.enums.PublishType;
+import com.freedom.services.dommain.enums.PublishesCategory;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Publish entity
@@ -34,6 +37,9 @@ public class Publish {
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private PublishType type;
+    @Column(name = "category")
+    @Enumerated(EnumType.STRING)
+    private PublishesCategory category;
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "tags", joinColumns = @JoinColumn(name = "publish_id"))
     private List<String> tags;
@@ -41,7 +47,13 @@ public class Publish {
     private LocalDateTime dateCreate;
     @Column(name = "date_publication", columnDefinition = "TIMESTAMP")
     private LocalDateTime datePublication;
-
+    @ManyToMany
+    @JoinTable(
+            name = "publishes_likes",
+            joinColumns = { @JoinColumn(name = "publish_id") },
+            inverseJoinColumns = { @JoinColumn(name = "user_id")}
+    )
+    private Set<User> likes = new HashSet<>();
 
     public static Publish newPublishByAuthorAndName(User author, String name) {
         Publish publish = new Publish();
@@ -74,7 +86,6 @@ public class Publish {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return localDateTime.format(formatter);
     }
-
 
 
 }

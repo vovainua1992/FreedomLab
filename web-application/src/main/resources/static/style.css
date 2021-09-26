@@ -42,8 +42,27 @@ tabs .nav-link.active {
     box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
 }
 
+.display-0 {
+    font-size: 2.5rem!important;
+}
+
 .display-7 {
-    font-size: 2rem;
+    font-size: 0.75rem!important;
+}
+
+.like{
+    top: calc(50% + 5px);
+    left: -60px;
+}
+
+.subscribe{
+   bottom: -20px;
+    right:100px;
+}
+
+.author-name{
+    color: #6c757d!important;
+    font-size: 2.5rem!important;
 }
 
 .h-20 {
@@ -126,4 +145,9 @@ tabs .nav-link.active {
     display: block;
     left: 25%;
     top: 25%;
+}
+
+.border-blue{
+    border: 3px solid #dee2e6!important;
+    border-color: #427fbf!important;
 }
