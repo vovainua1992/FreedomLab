@@ -37,9 +37,9 @@ public class Publish {
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private PublishType type;
-    @Column(name = "category")
-    @Enumerated(EnumType.STRING)
-    private PublishesCategory category;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    private Category category;
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "tags", joinColumns = @JoinColumn(name = "publish_id"))
     private List<String> tags;
@@ -55,8 +55,9 @@ public class Publish {
     )
     private Set<User> likes = new HashSet<>();
 
-    public static Publish newPublishByAuthorAndName(User author, String name) {
+    public static Publish newPublish(User author, String name,Category category) {
         Publish publish = new Publish();
+        publish.setCategory(category);
         publish.setActive(false);
         publish.setTitleNames(name);
         publish.setAuthor(author);

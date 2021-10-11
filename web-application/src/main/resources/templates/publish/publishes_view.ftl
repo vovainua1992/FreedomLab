@@ -1,6 +1,7 @@
 <#import "../parts/common.ftl" as c>
 <#import "publish_parts.ftl" as p>
 <#import "../parts/pager.ftl" as pager>
+<#import "../parts/category.ftl" as category>
 
 
 <@c.page>
@@ -13,6 +14,7 @@
                 <tr>
                     <th scope="col">id</th>
                     <th scope="col">Імя</th>
+                    <th scope="col">Категорія</th>
                     <th scope="col">Дата створення</th>
                     <th scope="col">Дата публіквання</th>
                     <th scope="col"></th>
@@ -28,6 +30,11 @@
                         <tr>
                             <th scope="row">${publish.id}</th>
                             <td>${publish.titleNames}</td>
+                            <th><#if publish.category?has_content>
+                                    ${publish.category.name}
+                                <#else>
+                                    null
+                                </#if></th>
                             <td><#if publish.dateCreate??>${publish.dateToString(publish.dateCreate)}<#else>Дуже давно</#if></td>
                             <td><#if publish.datePublication??>${publish.dateToString(publish.datePublication)}<#else>Не опубліковано</#if></td>
                             <td>
@@ -55,7 +62,6 @@
             </table>
         </div>
         </#if>
-
     </div>
     <div class="container-xxl mt-auto">
         <div class="row">
@@ -69,14 +75,8 @@
 <#macro filter categories tags>
     <div class="container-xxl mt-2 ">
         <div class="row mx-3 py-1 border-blue rounded-5 bg-white">
-            <div class="col">
-                <label for="categories">Категорії:</label>
-                <select name="categories" id="categories" onchange="selectCategory()">
-                    <#list categories as category>
-                        <option value="${category.id}">${category.name}</option>
-                    </#list>
-                </select>
-
+            <div class="col-auto">
+                <@category.select categories true></@category.select>
             </div>
             <div class="col">
                 <label for="tags">Теги:</label>
@@ -84,7 +84,6 @@
                     <#list tags as tag>
                         <div class="btn btn-outline-light">${tag}</div>
                     <#else>
-
                     </#list>
                 </datalist>
             </div>

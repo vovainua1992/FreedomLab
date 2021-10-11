@@ -1,5 +1,6 @@
 package com.freedom.services.dommain.dto;
 
+import com.freedom.services.dommain.Category;
 import com.freedom.services.dommain.Image;
 import com.freedom.services.dommain.Publish;
 import com.freedom.services.dommain.User;
@@ -22,6 +23,7 @@ public class PublishDto {
     private String textHtml;
     private User author;
     private PublishType type;
+    private Category category;
     private LocalDateTime dateCreate;
     private LocalDateTime datePublication;
     private long likes ;
@@ -36,6 +38,7 @@ public class PublishDto {
         this.textHtml = publish.getTextHtml();
         this.author = publish.getAuthor();
         this.type = publish.getType();
+        this.category = publish.getCategory();
         this.dateCreate = publish.getDateCreate();
         this.datePublication = publish.getDatePublication();
         this.likes = likes;

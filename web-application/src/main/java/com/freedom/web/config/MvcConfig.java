@@ -1,8 +1,10 @@
 package com.freedom.web.config;
 
+import com.freedom.services.convertors.PublishFilterConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -24,6 +26,12 @@ public class MvcConfig implements WebMvcConfigurer {
     }
 
     @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(new PublishFilterConverter());
+        WebMvcConfigurer.super.addFormatters(registry);
+    }
+
+    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // System.out.println(uploadPath);
         registry.addResourceHandler("/img/**")
@@ -31,4 +39,5 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/static/**")
                 .addResourceLocations("classpath:/static/");
     }
+
 }

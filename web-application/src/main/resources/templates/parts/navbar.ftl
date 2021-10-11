@@ -1,6 +1,7 @@
 <#include "security.ftl">
 <#import "filter.ftl" as filter>
 <#import "log.ftl" as login>
+<#import "category.ftl" as category>
 
 <#macro navbar>
     <div class="w-100 bg-blue-gradient">
@@ -92,6 +93,10 @@
                     <div class="modal-body">
                         <label class="form-text">Імя публікації:</label>
                         <input class="form-control" id="image-file" type="text" name="name"/>
+                        <div class="mt-2">
+                            <#if user??><@category.select categories false></@category.select>
+                            </#if>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Відмінити</button>

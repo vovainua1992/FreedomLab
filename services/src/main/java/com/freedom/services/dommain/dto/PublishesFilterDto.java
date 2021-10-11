@@ -10,7 +10,6 @@ import java.util.List;
 @JsonIgnoreProperties
 @Data
 public class PublishesFilterDto {
-    private long author_id;
-    private Category category;
+    private long categoryId;
     private List<String> tags;
 }
