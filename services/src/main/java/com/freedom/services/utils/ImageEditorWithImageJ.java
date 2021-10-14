@@ -14,13 +14,12 @@ public class ImageEditorWithImageJ implements ImageEditor {
     public void cropImage(Path path,double scalar, int posX, int posY, int size) {
         ImagePlus imp = IJ.openImage(path.toString());
         ImageProcessor ip = imp.getProcessor();
-        System.out.println(scalar);
-        Roi roi = new Roi(posX/scalar+size/2.0*scalar, posY/scalar+size/2.0*scalar, size*scalar, size*scalar); // x, y, width, height of the rectangle
+        double sizeScale = size*scalar;
+        Roi roi = new Roi(posX*scalar, posY*scalar, sizeScale, sizeScale); // x, y, width, height of the rectangle
         ip.setRoi(roi);
         ip = ip.crop();
         imp = new ImagePlus(path.getFileName().toString(), ip);
         IJ.save(imp,path.toString());
-
     }
 
     public void mirrorHorizontal(Path path) {
