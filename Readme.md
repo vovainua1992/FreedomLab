@@ -5,21 +5,21 @@
 A simple social blogging project.  
 A project created to study the spring framework.
 
-# Getting- 
+# Getting-started 
 ###Edit properties files: 
 > Edit config in rows: \
 > spring.datasource.url \
 > spring.datasource.username \
 > spring.datasource.password 
 > 
-> upload.path \
+> upload.path 
 > 
 > spring.mail.host \
 > spring.mail.username \
 > spring.mail.password \'
 > spring.mail.port \
 > spring.mail.protocol \
-> mail.debug \
+> mail.debug 
 > 
 > my.server.url 
 >> web-application/src/main/resources/application.property
@@ -32,6 +32,7 @@ A project created to study the spring framework.
 > < user>username< /user> \
 > < password>password< /password>
 
+### Run migrate db
 > In flyway-module run mvn flyway-maven-plugin:7.9.0:migrate
 
 
@@ -41,10 +42,7 @@ A project created to study the spring framework.
 * services (service code and business logic)
 * web (web client )
 
-## Plans for the future:
-- add a rest-module
-- migrate the web-module to angular
-- add telegram-bot/viber-bor/mobile-aplication
+
 
 ##Project uses:
 >    - freemarker(template engine)
