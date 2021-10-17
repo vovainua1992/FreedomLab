@@ -36,10 +36,10 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>7.9.0</version>
                 <configuration>
-                    <driver>org.postgresql.Driver</driver>
-                    <url>jdbc:postgresql://localhost:5432/tuto?useUnicode=true&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true&amp;useSSL=false</url>
-                    <user>postgres</user>
-                    <password>1295wasd</password>
+                    <driver>your_driver</driver>
+                    <url>your_db_url</url>
+                    <user>username</user>
+                    <password>password</password>
                 </configuration>
             </plugin>
 
