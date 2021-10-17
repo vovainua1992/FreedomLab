@@ -12,10 +12,7 @@ import com.freedom.services.repos.PublicationRepos;
 import lombok.AllArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +20,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -62,15 +58,29 @@ public class PublicationService {
         {
 
             PublishesFilterDto filterDto  =  conversionService.convert(model.getAttribute("filter"),PublishesFilterDto.class) ;
-            filterDto.setCategoryId(filterDto.getCategoryId()-1);
             model.addAttribute("selectCategory",filterDto.getCategoryId());
-            if (filterDto.getCategoryId()==-1)
-                model.addAttribute("publishes", publicationRepos.findAllByActiveTrueAndTypeCustom(pageable,user));
+            if (filterDto.getCategoryId()==0)
+                if (!(Boolean) model.getAttribute("isMy"))
+                    model.addAttribute("publishes", publicationRepos.findAllForUser(pageable,user));
+                else
+                    model.addAttribute("publishes",publicationRepos.findAllByAuthor(user,pageable));
             else
-                model.addAttribute("publishes", publicationRepos.findAllByActiveTrueAndTypeCustomByUserByAndCategory(pageable,user,categoryService.getByID(filterDto.getCategoryId())));
+                if (!(Boolean) model.getAttribute("isMy"))
+                    model.addAttribute("publishes", publicationRepos.findAllByCategoryForUser(
+                            pageable,
+                            user,
+                            categoryService.getByID(filterDto.getCategoryId())));
+                else
+                    model.addAttribute("publishes", publicationRepos.findAllByCategoryAndByAuthorForUser(
+                            pageable,
+                            user,
+                            categoryService.getByID(filterDto.getCategoryId())));
         }
         else
-            model.addAttribute("publishes", publicationRepos.findAllByActiveTrueAndTypeCustom(pageable,user));
+            if(!(Boolean) model.getAttribute("isMy"))
+                model.addAttribute("publishes", publicationRepos.findAllForUser(pageable,user));
+            else
+                model.addAttribute("publishes",publicationRepos.findAllByAuthor(user,pageable));
     }
 
     public void updateContent(String json, Publish publish) throws JsonProcessingException {
@@ -102,8 +112,7 @@ public class PublicationService {
         }
     }
 
-    public void removeAuthor(User removeAuthor,User deletedSystemUser) {
-        List<PublishDto> publishes = publicationRepos.findAllByAuthor(removeAuthor);
-        publishes.forEach((PublishDto p)->{p.setAuthor(deletedSystemUser);});
+    public void removeAuthor(long removeId) {
+        publicationRepos.replaceAllByAuthor_Id(removeId);
     }
 }

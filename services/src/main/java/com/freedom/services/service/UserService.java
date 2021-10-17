@@ -156,7 +156,7 @@ public class UserService implements UserDetailsService {
      * @return
      */
     public boolean removeUser(long id) {
-        publicationService.removeAuthor(userRepos.findById(id), userRepos.findById(3));
+        publicationService.removeAuthor(id);
         userRepos.deleteById(id);
         return true;
     }
@@ -165,10 +165,13 @@ public class UserService implements UserDetailsService {
         User account = userRepos.findById(id);
         if (!account.equals(currentUser)) {
             Set<User> subscribers = account.getSubscribers();
+            Set<User> subscriptions = currentUser.getSubscriptions();
             if (!subscribers.contains(currentUser)) {
                 subscribers.add(currentUser);
+                subscriptions.add(account);
+                userRepos.save(account);
+                userRepos.save(currentUser);
             }
-            userRepos.save(account);
         }
     }
 

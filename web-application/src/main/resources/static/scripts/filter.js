@@ -5,7 +5,7 @@ function selectCategory(){
     let select_tags = document.getElementById('tags').children;
     let filterDto = {
         categoryId : select_category,
-        tags : Array.from(select_tags)
+        tags : Array.from(select_tags),
     }
     console.log(select_category);
     let xhr;

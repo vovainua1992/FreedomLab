@@ -13,6 +13,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import static javax.persistence.GenerationType.SEQUENCE;
+
 /**
  * Entity for users
  */
@@ -21,7 +23,7 @@ import java.util.Set;
 @Data
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank(message = "Ваш логін не може бути пустим")
     private String username;

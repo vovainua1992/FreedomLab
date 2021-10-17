@@ -46,8 +46,8 @@ public class PublicationController {
     public String getAll(@PageableDefault(sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,
                          @AuthenticationPrincipal User user,
                          Model model) {
-        publicationService.filteredPublish(pageable,user,model);
         model.addAttribute("isMy",false);
+        publicationService.filteredPublish(pageable,user,model);
         model.addAttribute("title", "Публікації");
         model.addAttribute("url","/news");
         return "publish/publishes_view";
@@ -86,7 +86,7 @@ public class PublicationController {
     @PostMapping("/add")
     public String addPublish(@AuthenticationPrincipal User user,
                              @RequestParam(name = "name") String name,
-                             @RequestParam("categories") Long categoryId,
+                             @RequestParam("categoriesC") Long categoryId,
                              Model model) {
         model.addAttribute("publish", publicationService.createPublish(user,name,categoryId));
         model.addAttribute("isEdit", true);

@@ -8,11 +8,13 @@ import com.freedom.services.dommain.dto.PublishesFilterDto;
 import com.freedom.services.dommain.enums.PublishesCategory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.logging.Filter;
 
@@ -29,7 +31,7 @@ public interface PublicationRepos extends CrudRepository<Publish, Long> {
             "from Publish p left join p.likes ml " +
             "where p.type='CUSTOM' and p.active=true " +
             "group by p")
-    Page<PublishDto> findAllByActiveTrueAndTypeCustom(
+    Page<PublishDto> findAllForUser(
             Pageable pageable ,
             @Param("user")User user );
 
@@ -39,11 +41,35 @@ public interface PublicationRepos extends CrudRepository<Publish, Long> {
             "   sum(case when ml = :user then 1 else 0 end) > 0" +
             ") " +
             "from Publish p left join p.likes ml " +
+            "where p.type='CUSTOM' and p.active=true " +
+            "group by p")
+    List<PublishDto> findAllForUser(@Param("user")User user );
+
+    @Query("select new com.freedom.services.dommain.dto.PublishDto(" +
+            "   p, " +
+            "   count(ml), " +
+            "   sum(case when ml = :user then 1 else 0 end) > 0" +
+            ") " +
+            "from Publish p left join p.likes ml " +
             "where p.type='CUSTOM' and p.active=true and p.category=:category " +
             "group by p")
-    Page<PublishDto> findAllByActiveTrueAndTypeCustomByUserByAndCategory(
+    Page<PublishDto> findAllByCategoryForUser(
             Pageable pageable ,
             @Param("user")User user ,@Param("category") Category category);
+
+    @Query("select new com.freedom.services.dommain.dto.PublishDto(" +
+            "   p, " +
+            "   count(ml), " +
+            "   sum(case when ml = :user then 1 else 0 end) > 0" +
+            ") " +
+            "from Publish p left join p.likes ml " +
+            "where p.type='CUSTOM' and p.category=:category and p.author=:user" +
+            " " +
+            "group by p")
+    Page<PublishDto> findAllByCategoryAndByAuthorForUser(
+            Pageable pageable ,
+            @Param("user")User user ,@Param("category") Category category);
+
 
     @Query(value = "SELECT * FROM publishes " +
             "WHERE type = 'CUSTOM' and id IN " +
@@ -81,10 +107,17 @@ public interface PublicationRepos extends CrudRepository<Publish, Long> {
     @Query("select new com.freedom.services.dommain.dto.PublishDto(" +
             "   m, " +
             "   count(ml), " +
-            "  false " +
+            "  sum(case when ml = :author then 1 else 0 end) > 0 " +
             ") " +
             "from Publish m left join m.likes ml " +
             "where m.author = :author " +
             "group by m")
     List<PublishDto> findAllByAuthor(@Param("author") User author);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update publishes set author_id = 3 where  author_id=:author_id ;",nativeQuery = true)
+    void replaceAllByAuthor_Id( @Param("author_id")Long authorId);
+    List<Publish> findAll();
+
 }
