@@ -7,12 +7,12 @@
     <parent>
         <groupId>com.freedom</groupId>
         <artifactId>FreedomLab</artifactId>
-        <version>0.1.5-SNAPSHOT</version>
+        <version>0.1.7-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>com.freedom</groupId>
     <artifactId>service</artifactId>
-    <version>0.1.5-SNAPSHOT</version>
+    <version>0.1.7-SNAPSHOT</version>
     <name>services</name>
     <description>Demo project</description>
     <packaging>jar</packaging>
@@ -94,7 +94,7 @@
         <dependency>
             <groupId>com.freedom</groupId>
             <artifactId>flyway</artifactId>
-            <version>0.1.5-SNAPSHOT</version>
+            <version>0.1.7-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.flywaydb</groupId>
